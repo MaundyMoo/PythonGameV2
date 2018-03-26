@@ -75,27 +75,27 @@ class GameScene(SceneBase):
                 if event.key in self.KeyListener.UP:
                     self.player.dir = 1
                     self.player.flip = False
+                    self.renderedBack = False
                     if self.player.Move(0,-1, self.CameraX, self.CameraY):
                         self.CameraY += Tiles.TILESIZE
-                        self.renderedBack = False
                 elif event.key in self.KeyListener.DOWN:
                     self.player.dir = 0
                     self.player.flip = False
+                    self.renderedBack = False
                     if self.player.Move(0,+1, self.CameraX, self.CameraY):
                         self.CameraY -= Tiles.TILESIZE
-                        self.renderedBack = False
                 elif event.key in self.KeyListener.LEFT:
                     self.player.dir = 2
                     self.player.flip = True
+                    self.renderedBack = False
                     if self.player.Move(-1,0, self.CameraX, self.CameraY):
                         self.CameraX += Tiles.TILESIZE
-                        self.renderedBack = False
                 elif event.key in self.KeyListener.RIGHT:
                     self.player.dir = 2
                     self.player.flip = False
+                    self.renderedBack = False
                     if self.player.Move(1,0, self.CameraX, self.CameraY):
                         self.CameraX -= Tiles.TILESIZE
-                        self.renderedBack = False
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative
