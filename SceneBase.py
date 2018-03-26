@@ -63,6 +63,8 @@ class GameScene(SceneBase):
         self.tileMap = self.map.getTileMap()
         self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,5)
         self.Entities = [self.player]
+        self.animTiles = []
+        self.renderedBack = False
         self.CameraX = 0
         self.CameraY = 0
         
@@ -70,6 +72,7 @@ class GameScene(SceneBase):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 self.player.handleInputs(event)
+                self.renderedBack = False
                 if event.key in self.KeyListener.UP:
                     self.player.dir = 1
                     self.player.flip = False
@@ -108,9 +111,16 @@ class GameScene(SceneBase):
         for each in self.Entities:
             each.Update()
     def Render(self, screen):
-        screen.fill((0,222,0))
+        if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True
+        for each in self.Entities:
+            self.tileMap[each.x][each.y].Render(screen, self.CameraX, self.CameraY)
+            each.Render(screen, self.CameraX, self.CameraY)
+        for each in self.animTiles:
+            self.tileMap[each[0]][each[1]].Render(screen, self.CameraX, self.CameraY)
+    def backgroundRender(self, screen):
+        self.animTiles = []
         for x in range(0, len(self.tileMap)):
             for y in range (0, len(self.tileMap[0])):
-                self.tileMap[x][y].Render(screen, self.CameraX, self.CameraY) 
-        for each in self.Entities:
-            each.Render(screen, self.CameraX, self.CameraY)
+                self.tileMap[x][y].Render(screen, self.CameraX, self.CameraY)
+                if type(self.tileMap[x][y]) == Tiles.AnimTile:
+                    self.animTiles.append((x,y))
