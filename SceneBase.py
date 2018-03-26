@@ -113,7 +113,7 @@ class GameScene(SceneBase):
     def Render(self, screen):
         if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True
         for each in self.Entities:
-            self.tileMap[each.x][each.y].Render(screen, self.CameraX, self.CameraY)
+            self.tileMap[each.y][each.x].Render(screen, self.CameraX, self.CameraY)
             each.Render(screen, self.CameraX, self.CameraY)
         for each in self.animTiles:
             self.tileMap[each[0]][each[1]].Render(screen, self.CameraX, self.CameraY)

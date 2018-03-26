@@ -11,7 +11,6 @@ class Entity:
     def Update(self):
         pass
     def Render(self, screen, OffsetX, OffsetY):
-        self.map[self.x][self.y].Render(screen, OffsetX, OffsetY)
         screen.blit(self.sprite,(self.x * Tiles.TILESIZE + OffsetX,self.y * Tiles.TILESIZE + OffsetY))
     def Move(self):
         pass
