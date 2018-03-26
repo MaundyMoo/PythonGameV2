@@ -61,7 +61,7 @@ class GameScene(SceneBase):
         super().__init__(width, height)
         self.map = Mapper.Map("res\map.png", "res\TileSheet.png", "res\AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
-        self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,5)
+        self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,10)
         self.Entities = [self.player]
         self.animTiles = []
         self.renderedBack = False

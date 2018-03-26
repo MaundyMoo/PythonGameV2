@@ -34,7 +34,7 @@ class Map():
                     row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,0),False,False))
                 #BLUE : water
                 elif self.pixels[y][x] == (0,0,255):
-                    row.append(Tiles.AnimTile((x,y),self.animTileSheet,True,False,0,3,2))
+                    row.append(Tiles.AnimTile((x,y),self.animTileSheet,True,False,0,3,10))
                 #YELLOW : Flowers?
                 elif self.pixels[y][x] == (255,255,0):
                     row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(1,0),False,False))
