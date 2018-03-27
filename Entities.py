@@ -47,8 +47,9 @@ class Player(Entity):
         pygame.draw.rect(screen, (0,255,0), (self.healthX, self.healthY, self.healthBarWidth * (self.health / self.maxHealth), self.healthBarHeight))
     def Update(self):
         if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
-            self.health -= 1 #me_irl
+            self.health -= self.map[self.y][self.x].damageValue 
         if self.health <= 0:
+            #me_irl
             self.die()
         self.animate()
     def animate(self):

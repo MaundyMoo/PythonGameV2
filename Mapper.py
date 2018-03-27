@@ -24,19 +24,19 @@ class Map():
             #Tile format (Position, sprite, collision, destructable)
                 #BLACK : Stone
                 if self.pixels[y][x] == (0,0,0):
-                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,1),True,False))
+                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,1),True))
                 #RED : lava or smth?
                 elif self.pixels[y][x] == (255,0,0):
-                    row.append(Tiles.DangerTileAnim((x,y),self.animTileSheet,True,False,1,3,20))
+                    row.append(Tiles.DangerTileAnim((x,y),self.animTileSheet,False,1,3,20, 5))
                 #GREEN : grass
                 elif self.pixels[y][x] == (0,255,0):
-                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,0),False,False))
+                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,0),False))
                 #BLUE : water
                 elif self.pixels[y][x] == (0,0,255):
-                    row.append(Tiles.AnimTile((x,y),self.animTileSheet,True,False,0,3,10))
+                    row.append(Tiles.AnimTile((x,y),self.animTileSheet,True,0,3,10))
                 #YELLOW : Flowers?
                 elif self.pixels[y][x] == (255,255,0):
-                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(1,0),False,False))
+                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(1,0),False))
                 #MAGENTA : ?
                 elif self.pixels[y][x] == (255,0,255):
                     pass

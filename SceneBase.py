@@ -111,10 +111,13 @@ class GameScene(SceneBase):
         #Stops upper most boundary
         elif self.CameraY > 0:
             self.CameraY = 0
+        #Updates every entity
         for each in self.Entities:
             each.Update()
+        #Checks if Player be dead
         if self.player.isDead:
-            self.Terminate()
+            self.SwitchToScene(EndScene(self.width, self.height))
+            
     def Render(self, screen):
         if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True
         for each in self.animTiles:
@@ -122,6 +125,7 @@ class GameScene(SceneBase):
         for each in self.Entities:
             self.tileMap[each.y][each.x].Render(screen, self.CameraX, self.CameraY)
             each.Render(screen, self.CameraX, self.CameraY)
+            
     def backgroundRender(self, screen):
         self.animTiles = []
         for x in range(0, len(self.tileMap)):
@@ -129,3 +133,27 @@ class GameScene(SceneBase):
                 self.tileMap[x][y].Render(screen, self.CameraX, self.CameraY)
                 if type(self.tileMap[x][y]) == Tiles.AnimTile or issubclass(type(self.tileMap[x][y]), Tiles.AnimTile):
                     self.animTiles.append((x,y))
+
+class EndScene(SceneBase):
+    def __init__(self, width, height):
+        self.font = pygame.font.SysFont("Impact", 128)
+        self.font2 = pygame.font.SysFont("arial", 48)
+        self.font3 = pygame.font.SysFont("arial", 24)
+        
+        self.msg = self.font.render("You Died", True, (255, 0, 0))
+        self.credit = self.font2.render("Game Made By Maund", True, (0, 255, 128))
+        self.instruct = self.font3.render("Press any key to close the game...", True, (120, 120, 120))
+        super().__init__(width, height)
+
+    def ProcessInput(self, events, pressed_keys):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                self.Terminate()
+                
+    def Update(self):
+        pass
+    def Render(self, screen):
+        screen.fill((0, 0, 0))
+        screen.blit(self.msg, ((self.width/2) - (self.msg.get_width())/2, self.height/2 - (self.msg.get_height())))
+        screen.blit(self.credit, ((self.width/2) - (self.credit.get_width())/2, self.height/2))
+        screen.blit(self.instruct, ((self.width/2) - (self.instruct.get_width())/2, 2*self.height/3 + (self.instruct.get_height())))
