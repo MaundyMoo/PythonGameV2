@@ -42,3 +42,7 @@ class AnimTile(Tile):
         Sprite = pygame.transform.scale(Sprite, (self.TILESIZE, self.TILESIZE))
         return Sprite
 #Special non floor / wall tiles could go here that would need special parameters i.e. door that needs destination
+class DangerTileAnim(AnimTile):
+    def __init__(self, gridPos, spritesheet,collision, destructable, animRow, NoOfFrames, timePeriod):
+        super().__init__(gridPos, spritesheet,collision, destructable, animRow, NoOfFrames, timePeriod)
+        self.collision = False

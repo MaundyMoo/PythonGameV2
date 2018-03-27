@@ -113,17 +113,19 @@ class GameScene(SceneBase):
             self.CameraY = 0
         for each in self.Entities:
             each.Update()
+        if self.player.isDead:
+            self.Terminate()
     def Render(self, screen):
         if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True
+        for each in self.animTiles:
+            self.tileMap[each[0]][each[1]].Render(screen, self.CameraX, self.CameraY)
         for each in self.Entities:
             self.tileMap[each.y][each.x].Render(screen, self.CameraX, self.CameraY)
             each.Render(screen, self.CameraX, self.CameraY)
-        for each in self.animTiles:
-            self.tileMap[each[0]][each[1]].Render(screen, self.CameraX, self.CameraY)
     def backgroundRender(self, screen):
         self.animTiles = []
         for x in range(0, len(self.tileMap)):
             for y in range (0, len(self.tileMap[0])):
                 self.tileMap[x][y].Render(screen, self.CameraX, self.CameraY)
-                if type(self.tileMap[x][y]) == Tiles.AnimTile:
+                if type(self.tileMap[x][y]) == Tiles.AnimTile or issubclass(type(self.tileMap[x][y]), Tiles.AnimTile):
                     self.animTiles.append((x,y))

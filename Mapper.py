@@ -15,7 +15,6 @@ class Map():
         self.pixels = pixels
         #self.TileMap = self.getTileMap()
         self.map.close()
-    #Need to find a way to update for animated tiles WWW
     def getTileMap(self):
         TileMap = []
         #columns then rows for 2D lists
@@ -23,12 +22,12 @@ class Map():
             row = []
             for x in range(0, len(self.pixels[0])):
             #Tile format (Position, sprite, collision, destructable)
-                #BLACK : ?
+                #BLACK : Stone
                 if self.pixels[y][x] == (0,0,0):
-                    pass
+                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,1),True,False))
                 #RED : lava or smth?
                 elif self.pixels[y][x] == (255,0,0):
-                    pass
+                    row.append(Tiles.DangerTileAnim((x,y),self.animTileSheet,True,False,1,3,20))
                 #GREEN : grass
                 elif self.pixels[y][x] == (0,255,0):
                     row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,0),False,False))

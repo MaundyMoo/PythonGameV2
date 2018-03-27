@@ -14,23 +14,42 @@ class Entity:
         screen.blit(self.sprite,(self.x * Tiles.TILESIZE + OffsetX,self.y * Tiles.TILESIZE + OffsetY))
     def Move(self):
         pass
-    #Probably won't need as Im not doing pixel perfect collision detection this time around
-    def Collision(self):
+    def die(self):
         pass
-
+        
 class Player(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval):
         super().__init__(x, y,map)
+        #Camera / Map constants
         self.xCentre = int((Main.WIDTH / Tiles.TILESIZE) / 2)
         self.yCentre = int((Main.HEIGHT / Tiles.TILESIZE) / 2)
+        #Sprite / Animation initialisation
         self.spriteSheet = Image.SpriteSheet(spritesheet, 32)
         self.sprite = self.ImgToSprite(self.spriteSheet.returnTile(0, 0))
         self.sprite = pygame.transform.scale(self.sprite, (Tiles.TILESIZE, Tiles.TILESIZE))
         self.frames = frames
         self.interval = interval
-        self.tick = 0
         self.dir = 0
+        self.tick = 0
+        #Game variable initialisation
+        self.isDead = False
+        self.maxHealth = 100
+        self.health = self.maxHealth
+        self.healthBarHeight = 20
+        self.healthBarWidth = 150
+        self.healthX = self.healthY = 10
+        self.healthOffset = 10
+    def Render(self, screen, OffsetX, OffsetY):
+        super().Render(screen, OffsetX, OffsetY)
+        #Draws three rectangles for the health bar, Health bar in green, back in red, and border in black
+        pygame.draw.rect(screen, (0,0,0), (self.healthX - self.healthOffset/2, self.healthY - self.healthOffset/2, self.healthBarWidth + self.healthOffset, self.healthBarHeight + self.healthOffset))
+        pygame.draw.rect(screen, (255,0,0), (self.healthX, self.healthY, self.healthBarWidth, self.healthBarHeight))
+        pygame.draw.rect(screen, (0,255,0), (self.healthX, self.healthY, self.healthBarWidth * (self.health / self.maxHealth), self.healthBarHeight))
     def Update(self):
+        if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
+            self.health -= 1 #me_irl
+        if self.health <= 0:
+            self.die()
         self.animate()
     def animate(self):
         self.tick += 1 
@@ -64,3 +83,6 @@ class Player(Entity):
             return False
     def handleInputs(self, input):
         pass
+    #me_irl
+    def die(self):
+        self.isDead = True
