@@ -29,6 +29,7 @@ class TitleScene(SceneBase):
         self.exit = self.font.render("Exit", True, (0, 255, 128))
         self.toRender.extend([self.title, self.start, self.exit])
         self.option = 0
+        self.msg = "Start"
         super().__init__(width, height)
 
     def ProcessInput(self, events, pressed_keys):
@@ -36,6 +37,7 @@ class TitleScene(SceneBase):
             if event.type == pygame.KEYDOWN:
                 if event.key in self.KeyListener.SELECT:
                     if self.option == 0:
+                        self.msg = "Loading..."
                         self.SwitchToScene(GameScene(self.width, self.height))
                     if self.option == 1:
                         self.Terminate()
@@ -45,10 +47,10 @@ class TitleScene(SceneBase):
                     self.option = 0
     def Update(self):
         if self.option == 0:
-            self.toRender[1] = self.font.render("Start", True, (0, 255, 255))
+            self.toRender[1] = self.font.render(self.msg, True, (0, 255, 255))
             self.toRender[2] = self.font.render("Exit", True, (50, 50, 50))
         elif self.option == 1:
-            self.toRender[1] = self.font.render("Start", True, (50, 50, 50))
+            self.toRender[1] = self.font.render(self.msg, True, (50, 50, 50))
             self.toRender[2] = self.font.render("Exit", True, (0, 255, 255))
     def Render(self, screen):
         screen.fill((255, 0, 0))
@@ -140,7 +142,7 @@ class EndScene(SceneBase):
         self.font2 = pygame.font.SysFont("arial", 48)
         self.font3 = pygame.font.SysFont("arial", 24)
         
-        self.msg = self.font.render("You Died", True, (255, 0, 0))
+        self.msg = self.font.render("You died", True, (255, 0, 0))
         self.credit = self.font2.render("Game Made By Maund", True, (0, 255, 128))
         self.instruct = self.font3.render("Press any key to close the game...", True, (120, 120, 120))
         super().__init__(width, height)

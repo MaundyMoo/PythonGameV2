@@ -6,7 +6,7 @@ class Map():
         self.tileSheet = Image.SpriteSheet(tileSheetPath, 32)
         self.animTileSheet = Image.SpriteSheet(animTileSheetPath, 32)
         #Gets a list of all the pixel data in the img in a 1 dimensional list
-        self.map.convert("RGB")
+        self.map = self.map.convert("RGB")
         pixels = list(self.map.getdata())
         #Sets the size so that the pixel list can be turned into a 2 dimensional array like a grid
         width, height = self.map.size
