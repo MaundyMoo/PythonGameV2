@@ -23,6 +23,7 @@ def run(width, height, fps, scene):
                         pygame.display.set_mode((width, height), pygame.FULLSCREEN)
                     else:
                         pygame.display.set_mode((width, height))
+                    activeScene.renderedBack = False
             if quit_attempt:
                 activeScene.Terminate()
             else:
@@ -52,5 +53,5 @@ if __name__ == "__main__":
     pygame.init()
     pygame.mouse.set_visible(False)
     #DEBUG: Change start scene here
-    title = Scene.GameScene(WIDTH, HEIGHT)
+    title = Scene.TitleScene(WIDTH, HEIGHT)
     run(WIDTH, HEIGHT, 60, title)
