@@ -13,7 +13,6 @@ class Map():
         pixels = [pixels[i * width:
             (i + 1) * width] for i in range(height)]
         self.pixels = pixels
-        #self.TileMap = self.getTileMap()
         self.map.close()
     def getTileMap(self):
         TileMap = []
