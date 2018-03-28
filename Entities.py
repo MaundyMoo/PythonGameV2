@@ -39,6 +39,7 @@ class Player(Entity):
         self.healthBarWidth = 150
         self.healthX = self.healthY = 10
         self.healthOffset = 10
+        self.switchLevel = False
     def Render(self, screen, OffsetX, OffsetY):
         super().Render(screen, OffsetX, OffsetY)
         #Draws three rectangles for the health bar, Health bar in green, back in red, and border in black
@@ -48,6 +49,8 @@ class Player(Entity):
     def Update(self):
         if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
             self.health -= self.map[self.y][self.x].damageValue 
+        elif type(self.map[self.y][self.x]) == Tiles.TransportTile:
+            self.switchLevel = True
         if self.health <= 0:
             #me_irl
             self.die()

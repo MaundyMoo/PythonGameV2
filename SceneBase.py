@@ -38,7 +38,7 @@ class TitleScene(SceneBase):
                 if event.key in self.KeyListener.SELECT:
                     if self.option == 0:
                         self.msg = "Loading..."
-                        self.SwitchToScene(GameScene(self.width, self.height))
+                        self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
                     if self.option == 1:
                         self.Terminate()
                 elif event.key in self.KeyListener.DOWN:
@@ -59,9 +59,9 @@ class TitleScene(SceneBase):
            
 class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
-    def __init__(self, width, height):
+    def __init__(self, width, height, mapFile):
         super().__init__(width, height)
-        self.map = Mapper.Map("res\map.png", "res\TileSheet.png", "res\AnimTileSheet.png")
+        self.map = Mapper.Map(mapFile, "res\TileSheet.png", "res\AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
         self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,10)
         self.Entities = [self.player]
@@ -119,6 +119,9 @@ class GameScene(SceneBase):
         #Checks if Player be dead
         if self.player.isDead:
             self.SwitchToScene(EndScene(self.width, self.height))
+        #Check if need to switch scene
+        if self.player.switchLevel:
+            self.SwitchToScene(GameScene(self.width, self.height, self.tileMap[self.player.y][self.player.x].destination))
             
     def Render(self, screen):
         if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True

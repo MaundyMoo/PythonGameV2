@@ -45,3 +45,8 @@ class DangerTileAnim(AnimTile):
     def __init__(self, gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue):
         super().__init__(gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod)
         self.damageValue = damageValue
+        
+class TransportTile(Tile):
+    def __init__(self, gridPos, sprite, collision, destination):
+        super().__init__(gridPos, sprite, collision)
+        self.destination = destination

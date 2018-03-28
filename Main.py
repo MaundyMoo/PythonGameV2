@@ -44,6 +44,8 @@ def run(width, height, fps, scene):
 #Screen Size
 WIDTH = 704 #704
 HEIGHT = 448 #448
+
+LEVELCOUNT = 0
 if __name__ == "__main__":
     import pygame, os
     import SceneBase as Scene
