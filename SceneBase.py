@@ -147,13 +147,14 @@ class EndScene(SceneBase):
         
         self.msg = self.font.render("You died", True, (255, 0, 0))
         self.credit = self.font2.render("Game Made By Maund", True, (0, 255, 128))
-        self.instruct = self.font3.render("Press any key to close the game...", True, (120, 120, 120))
+        self.instruct = self.font3.render("Press return to close the game...", True, (120, 120, 120))
         super().__init__(width, height)
 
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                self.Terminate()
+                if event.key in self.KeyListener.SELECT:
+                    self.Terminate()
                 
     def Update(self):
         pass
