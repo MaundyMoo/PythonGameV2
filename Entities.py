@@ -51,6 +51,8 @@ class Player(Entity):
         self.healthOffset = 10
         self.healthFont = pygame.font.SysFont("Impact", 20)
         self.switchLevel = False
+        #Combat Stats
+        self.Damage = 3
     def Render(self, screen, OffsetX, OffsetY):
         super().Render(screen, OffsetX, OffsetY)
         #Draws three rectangles for the health bar, Health bar in green, back in red, and border in black
@@ -69,7 +71,7 @@ class Player(Entity):
             self.die()
         super().Update()
 
-    def Move(self, dX, dY, OffsetX, OffsetY, Entities):
+    def Move(self, dX, dY, OffsetX, OffsetY, entities):
         #If the tile being moved onto has an event, trigger it
         if type(self.map[self.y + dY][self.x + dX]) == Tiles.DangerTileAnim:
             self.health -= self.map[self.y + dY][self.x + dX].damageValue 
@@ -80,10 +82,13 @@ class Player(Entity):
         try:
             #collision check
             if self.map[self.y+dY][self.x+dX].isCollidable(): return False
-            for each in Entities[1::]:
+            for each in entities[1::]:
                 if (self.x + dX) == each.x and (self.y + dY) == each.y: 
-                    #TODO self.Combat(each)
-                    return False
+                    if issubclass(type(each), Enemy):
+                        self.Combat(each)
+                        return False
+                    else:
+                        print("Oopsies I made an error")
             #This stops the player moving off the screen to the left / top
             if self.y + dY < 0: dY = 0; return False
             if self.x + dX < 0: dX = 0; return False
@@ -104,16 +109,20 @@ class Player(Entity):
     def handleInputs(self, input):
         pass
     def Combat(self, enemy):
-        pass
-        #Check if enemy dies from attack:
-        #   If it does, kill the enemy and take no damage
-        #   Else, take the damage from the enemy and reduce health for both of the entities
+        if enemy.health < self.Damage:
+            enemy.die()
+        else:
+            self.health -= enemy.Damage
+            enemy.health -= self.Damage
+        #Display some visual feedback from battle, maybe print to console if need be as a form of combat log, but Id rather not
+        #Maybe a floating combat text kind of thing, like WoW but 2D, although may be difficult
     def die(self):
         self.isDead = True
 
 class Enemy(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
         super().__init__(x, y, spritesheet, map, frames, interval)
+        self.isDead = False
         #self.maxHealth = self.health = maxHealth
         #self.damage = damage
         #self.armour = armour
@@ -122,4 +131,10 @@ class Enemy(Entity):
     def move(self):
         pass
     def die(self):
-        pass
+        self.isDead = True
+class TestEnemy(Enemy):
+    def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
+        super().__init__(x, y, spritesheet, map, frames, interval, animRow)
+        #Stats
+        self.maxHealth = self.health = 5
+        self.Damage = 1

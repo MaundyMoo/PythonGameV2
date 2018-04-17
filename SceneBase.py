@@ -64,8 +64,13 @@ class GameScene(SceneBase):
         self.map = Mapper.Map(mapFile, "res\TileSheet.png", "res\AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
         self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,10)
-        self.DummyEnemy = Entities.Enemy(5,5,"res\EnemySheet.png",self.tileMap,3,10,0)
-        self.Entities = [self.player, self.DummyEnemy]
+        self.DummyEnemies = [Entities.TestEnemy(5,4,"res\EnemySheet.png",self.tileMap,3,10,0),
+                            Entities.TestEnemy(5,6,"res\EnemySheet.png",self.tileMap,3,10,0),
+                            Entities.TestEnemy(4,5,"res\EnemySheet.png",self.tileMap,3,10,0),
+                            Entities.TestEnemy(6,5,"res\EnemySheet.png",self.tileMap,3,10,0),
+                            Entities.TestEnemy(5,8,"res\EnemySheet.png",self.tileMap,3,10,0)]
+        self.Entities = [self.player]
+        self.Entities.extend(self.DummyEnemies)
         self.animTiles = []
         self.renderedBack = False
         self.CameraX = 0
@@ -120,6 +125,9 @@ class GameScene(SceneBase):
         #Checks if Player be dead
         if self.player.isDead:
             self.SwitchToScene(EndScene(self.width, self.height))
+        for each in self.Entities[1::]:
+            if each.isDead:
+                self.Entities.remove(each)
         #Check if need to switch scene
         if self.player.switchLevel:
             self.SwitchToScene(GameScene(self.width, self.height, self.tileMap[self.player.y][self.player.x].destination))
