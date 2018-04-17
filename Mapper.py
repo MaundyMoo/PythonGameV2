@@ -21,22 +21,25 @@ class Map():
             row = []
             for x in range(0, len(self.pixels[0])):
             #Tile format (Position, sprite, collision, destructable)
+            #AnimTile format (gridPos, spritesheet,collision, animRow, NoOfFrames, timePeriod)
+            #DamageTile format (gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue)
+            #TransportTile format (gridPos, sprite, collision, destination)
                 #BLACK : Stone
                 if self.pixels[y][x] == (0,0,0):
                     row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(2,0),True))
-                #RED : lava or smth?
+                #RED : lava or generic damageTile
                 elif self.pixels[y][x] == (255,0,0):
-                    row.append(Tiles.DangerTileAnim((x,y), self.animTileSheet,False,1,3,20, 5))
+                    row.append(Tiles.DangerTileAnim((x,y), self.animTileSheet,False,1,3,20,1))
                 #GREEN : grass
                 elif self.pixels[y][x] == (0,255,0):
                     row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(0,0),False))
                 #BLUE : water
                 elif self.pixels[y][x] == (0,0,255):
                     row.append(Tiles.AnimTile((x,y), self.animTileSheet,True,0,3,10))
-                #YELLOW : Flowers?
+                #YELLOW : Flowers
                 elif self.pixels[y][x] == (255,255,0):
                     row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(1,0),False))
-                #MAGENTA : ?
+                #MAGENTA : Transport
                 elif self.pixels[y][x] == (255,0,255):
                     row.append(Tiles.TransportTile((x,y), self.tileSheet.returnTile(3,0), False, "res\map1.png"))
                 #CYAN : ?

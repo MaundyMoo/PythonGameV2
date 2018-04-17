@@ -64,7 +64,8 @@ class GameScene(SceneBase):
         self.map = Mapper.Map(mapFile, "res\TileSheet.png", "res\AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
         self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,10)
-        self.Entities = [self.player]
+        self.DummyEnemy = Entities.Enemy(5,5,"res\EnemySheet.png",self.tileMap,3,10,0)
+        self.Entities = [self.player, self.DummyEnemy]
         self.animTiles = []
         self.renderedBack = False
         self.CameraX = 0
@@ -75,28 +76,28 @@ class GameScene(SceneBase):
             if event.type == pygame.KEYDOWN:
                 self.player.handleInputs(event)
                 if event.key in self.KeyListener.UP:
-                    self.player.dir = 1
+                    self.player.animRow = 1
                     self.player.flip = False
                     self.renderedBack = False
-                    if self.player.Move(0,-1, self.CameraX, self.CameraY):
+                    if self.player.Move(0,-1, self.CameraX, self.CameraY, self.Entities):
                         self.CameraY += Tiles.TILESIZE
                 elif event.key in self.KeyListener.DOWN:
-                    self.player.dir = 0
+                    self.player.animRow = 0
                     self.player.flip = False
                     self.renderedBack = False
-                    if self.player.Move(0,+1, self.CameraX, self.CameraY):
+                    if self.player.Move(0,+1, self.CameraX, self.CameraY, self.Entities):
                         self.CameraY -= Tiles.TILESIZE
                 elif event.key in self.KeyListener.LEFT:
-                    self.player.dir = 2
+                    self.player.animRow = 2
                     self.player.flip = True
                     self.renderedBack = False
-                    if self.player.Move(-1,0, self.CameraX, self.CameraY):
+                    if self.player.Move(-1,0, self.CameraX, self.CameraY, self.Entities):
                         self.CameraX += Tiles.TILESIZE
                 elif event.key in self.KeyListener.RIGHT:
-                    self.player.dir = 2
+                    self.player.animRow = 2
                     self.player.flip = False
                     self.renderedBack = False
-                    if self.player.Move(1,0, self.CameraX, self.CameraY):
+                    if self.player.Move(1,0, self.CameraX, self.CameraY, self.Entities):
                         self.CameraX -= Tiles.TILESIZE
             
     def Update(self):
