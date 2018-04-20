@@ -6,16 +6,14 @@ class Map():
         self.tileSheet = Image.SpriteSheet(tileSheetPath, 32)
         self.animTileSheet = Image.SpriteSheet(animTileSheetPath, 32)
         #Gets a list of all the pixel data in the img in a 1 dimensional list
-        self.map.convert("RGB")
+        self.map = self.map.convert("RGB")
         pixels = list(self.map.getdata())
         #Sets the size so that the pixel list can be turned into a 2 dimensional array like a grid
         width, height = self.map.size
         pixels = [pixels[i * width:
             (i + 1) * width] for i in range(height)]
         self.pixels = pixels
-        #self.TileMap = self.getTileMap()
         self.map.close()
-    #Need to find a way to update for animated tiles WWW
     def getTileMap(self):
         TileMap = []
         #columns then rows for 2D lists
@@ -23,24 +21,27 @@ class Map():
             row = []
             for x in range(0, len(self.pixels[0])):
             #Tile format (Position, sprite, collision, destructable)
-                #BLACK : ?
+            #AnimTile format (gridPos, spritesheet,collision, animRow, NoOfFrames, timePeriod)
+            #DamageTile format (gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue)
+            #TransportTile format (gridPos, sprite, collision, destination)
+                #BLACK : Stone
                 if self.pixels[y][x] == (0,0,0):
-                    pass
-                #RED : lava or smth?
+                    row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(2,0),True))
+                #RED : lava or generic damageTile
                 elif self.pixels[y][x] == (255,0,0):
-                    pass
+                    row.append(Tiles.DangerTileAnim((x,y), self.animTileSheet,False,1,3,20,1))
                 #GREEN : grass
                 elif self.pixels[y][x] == (0,255,0):
-                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(0,0),False,False))
+                    row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(0,0),False))
                 #BLUE : water
                 elif self.pixels[y][x] == (0,0,255):
-                    row.append(Tiles.AnimTile((x,y),self.animTileSheet,True,False,0,3,10))
-                #YELLOW : Flowers?
+                    row.append(Tiles.AnimTile((x,y), self.animTileSheet,True,0,3,10))
+                #YELLOW : Flowers
                 elif self.pixels[y][x] == (255,255,0):
-                    row.append(Tiles.Tile((x,y),self.tileSheet.returnTile(1,0),False,False))
-                #MAGENTA : ?
+                    row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(1,0),False))
+                #MAGENTA : Transport
                 elif self.pixels[y][x] == (255,0,255):
-                    pass
+                    row.append(Tiles.TransportTile((x,y), self.tileSheet.returnTile(3,0), False, "res\map1.png"))
                 #CYAN : ?
                 elif self.pixels[y][x] == (0,255,255):
                     pass

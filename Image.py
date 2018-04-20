@@ -32,6 +32,7 @@ class SpriteSheet:
                 row.append(tile)
             tiles.append(row)
         return tiles
+    #Removes certain colours from the spritesheet #FF00FF, #880088 are removed
     def removeColour(self, image):
         width, height = self.sheet.size
         image = [image[i * width:

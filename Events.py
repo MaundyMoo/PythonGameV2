@@ -8,4 +8,5 @@ class KeyListener:
         self.LEFT   = eval(self.KeyBinds.find('LEFT').text)
         self.RIGHT  = eval(self.KeyBinds.find('RIGHT').text)
         self.SELECT = eval(self.KeyBinds.find('SELECT').text)
+        self.MOVECMND = [self.UP, self.DOWN, self.LEFT, self.RIGHT]
     #Probably dont need a class to do this (when am I ever going to initialise this more than once)
