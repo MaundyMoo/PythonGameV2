@@ -63,12 +63,11 @@ class GameScene(SceneBase):
         super().__init__(width, height)
         self.map = Mapper.Map(mapFile, "res\TileSheet.png", "res\AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
-        self.player = Entities.Player(5,3,"res\playerSheet.png",self.tileMap,3,10)
-        self.DummyEnemies = [Entities.TestEnemy(5,4,"res\EnemySheet.png",self.tileMap,3,10,0),
-                            Entities.TestEnemy(5,6,"res\EnemySheet.png",self.tileMap,3,10,0),
-                            Entities.TestEnemy(4,5,"res\EnemySheet.png",self.tileMap,3,10,0),
-                            Entities.TestEnemy(6,5,"res\EnemySheet.png",self.tileMap,3,10,0),
-                            Entities.TestEnemy(5,8,"res\EnemySheet.png",self.tileMap,3,10,0)]
+        self.player = Entities.Player(2,2,"res\playerSheet.png",self.tileMap,3,10)
+        self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
+                             Entities.TestEnemy(5,7,self.tileMap),
+                             Entities.TestEnemy(4,6,self.tileMap),
+                             Entities.TestEnemy(6,6,self.tileMap)]
         self.Entities = [self.player]
         self.Entities.extend(self.DummyEnemies)
         self.animTiles = []
@@ -104,6 +103,10 @@ class GameScene(SceneBase):
                     self.renderedBack = False
                     if self.player.Move(1,0, self.CameraX, self.CameraY, self.Entities):
                         self.CameraX -= Tiles.TILESIZE
+                for commands in self.KeyListener.MOVECMND:
+                    if event.key in commands:
+                        for each in self.Entities[1::]:
+                            each.move(self.player.x, self.player.y, self.Entities)
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative

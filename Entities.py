@@ -42,7 +42,7 @@ class Player(Entity):
 
         #Health
         self.isDead = False
-        self.maxHealth = 5
+        self.maxHealth = 50
         self.health = self.maxHealth
         #Health bar drawing
         self.healthBarHeight = 20
@@ -73,10 +73,15 @@ class Player(Entity):
 
     def Move(self, dX, dY, OffsetX, OffsetY, entities):
         #If the tile being moved onto has an event, trigger it
-        if type(self.map[self.y + dY][self.x + dX]) == Tiles.DangerTileAnim:
-            self.health -= self.map[self.y + dY][self.x + dX].damageValue 
-        elif type(self.map[self.y + dY][self.x + dX]) == Tiles.TransportTile:
-            self.switchLevel = True
+        try:
+            if self.x + dX not in range(0, len(self.map[0])): dX = 0
+            if self.y + dY not in range(0, len(self.map)): dY = 0
+            if type(self.map[self.y + dY][self.x + dX]) == Tiles.DangerTileAnim:
+                self.health -= self.map[self.y + dY][self.x + dX].damageValue 
+            elif type(self.map[self.y + dY][self.x + dX]) == Tiles.TransportTile:
+                self.switchLevel = True
+        except IndexError:
+            pass
         #Returns True or false depending on whether it wants the camera to move with the character or not
         #Try-except is used to stop the player from moving off the screen out of bounds
         try:
@@ -123,17 +128,42 @@ class Enemy(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
         super().__init__(x, y, spritesheet, map, frames, interval)
         self.isDead = False
-        #self.maxHealth = self.health = maxHealth
-        #self.damage = damage
-        #self.armour = armour
-        #self.level = level
-        #self.animRow = animRow
-    def move(self):
-        pass
+    def move(self, playerX, playerY, entities):
+        #Currently just runs straight towards the player, checking only the tiles around it, need to replace with an actual path finding algorithm, e.g. A*
+        dY, dX = 0, 0
+        #check y
+        if playerY > self.y:
+            dY = 1
+        elif playerY < self.y:
+            dY = -1
+        if self.map[self.y + dY][self.x].collision == True:
+            dY = 0
+        else:
+            for each in entities:
+                if (self.y + dY, self.x) == (each.y, each.x):
+                    dY = 0
+                    break
+        #check x
+        if dY == 0 or playerY == self.y:
+            if playerX > self.x:
+                dX = 1
+            elif playerX < self.x:
+                dX = -1
+            if self.map[self.y][self.x + dX].collision == True:
+                dX = 0
+            else:
+                for each in entities:
+                    if (self.y, self.x + dX) == (each.y, each.x):
+                        dX = 0
+                        break   
+        self.y += dY; self.x += dX
     def die(self):
         self.isDead = True
+#might do multiple classes, one for each enemy type
 class TestEnemy(Enemy):
-    def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
+    def __init__(self, x, y, map):
+        #Entity Constants
+        spritesheet = "res\EnemySheet.png"; frames = 1; interval = 20; animRow = 0
         super().__init__(x, y, spritesheet, map, frames, interval, animRow)
         #Stats
         self.maxHealth = self.health = 5
