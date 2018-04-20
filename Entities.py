@@ -42,7 +42,7 @@ class Player(Entity):
 
         #Health
         self.isDead = False
-        self.maxHealth = 50
+        self.maxHealth = 5
         self.health = self.maxHealth
         #Health bar drawing
         self.healthBarHeight = 20
@@ -121,13 +121,21 @@ class Player(Entity):
             enemy.health -= self.Damage
         #Display some visual feedback from battle, maybe print to console if need be as a form of combat log, but Id rather not
         #Maybe a floating combat text kind of thing, like WoW but 2D, although may be difficult
+        
     def die(self):
         self.isDead = True
 
 class Enemy(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
         super().__init__(x, y, spritesheet, map, frames, interval)
+        self.maxHealth = self.health = self.Damage= 0
         self.isDead = False
+        
+    def Update(self):
+        super().Update()
+        if self.health <= 0:
+            self.die()
+            
     def move(self, playerX, playerY, entities):
         #Currently just runs straight towards the player, checking only the tiles around it, need to replace with an actual path finding algorithm, e.g. A*
         dY, dX = 0, 0
@@ -157,6 +165,9 @@ class Enemy(Entity):
                         dX = 0
                         break   
         self.y += dY; self.x += dX
+        if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
+            self.health -= self.map[self.y][self.x].damageValue
+            
     def die(self):
         self.isDead = True
 #might do multiple classes, one for each enemy type

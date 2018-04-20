@@ -139,9 +139,11 @@ class GameScene(SceneBase):
         if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True
         for each in self.animTiles:
             self.tileMap[each[1]][each[0]].Render(screen, self.CameraX, self.CameraY)
-        for each in self.Entities:
+        for each in self.Entities[1::]:
             self.tileMap[each.y][each.x].Render(screen, self.CameraX, self.CameraY)
             each.Render(screen, self.CameraX, self.CameraY)
+        self.tileMap[self.player.y][self.player.x].Render(screen, self.CameraX, self.CameraY)
+        self.player.Render(screen, self.CameraX, self.CameraY)
             
     def backgroundRender(self, screen):
         self.animTiles = []
