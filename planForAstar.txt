@@ -1,0 +1,8 @@
+Implementing A*
+    >Already have a grid of tiles
+    >Can create a layer of abstraction for the function wherein the tile map is reduced into a grid of 1s, passable, and 0s, non-passable where collision tiles and entities are 0 and the exact coords of the player is parsed into or have the player represented as 2
+    >Because each entity has to run the algorithm as the entities will be on different tiles, the abstracted grid can be modified after each entity moves to prevent entity collisions
+    >If no path is found (or if the distance of the path is too long potentially) the entity could stay still
+    >Heuristic will only need to account for 4 directions as no diagonal movement is implemented (though that could make for an interesting enemy type)
+    >If the entity is adjacent to the player the algorithm can be ignored and combat occurs instead
+    >Maybe generate a 'collision map' when each map is loaded, and simply update the location of entities, or save the location of each entity and check separately

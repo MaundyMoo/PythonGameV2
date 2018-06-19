@@ -1,5 +1,6 @@
 #Class to allow custom input mappings
 import pygame, xml.etree.ElementTree as ET
+#Could create a PyQt application to edit controls rather than try a clunky pygame interface.
 class KeyListener:
     def __init__(self):
         self.KeyBinds = ET.parse('controls.xml').getroot()

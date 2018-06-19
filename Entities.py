@@ -67,7 +67,6 @@ class Player(Entity):
         screen.blit(healthText, (self.healthX + self.healthBarWidth/2 - healthText.get_width()/2, self.healthY - self.healthOffset/4))
     def Update(self):
         if self.health <= 0:
-            #me_irl
             self.die()
         super().Update()
 
@@ -121,6 +120,7 @@ class Player(Entity):
             enemy.health -= self.Damage
         #Display some visual feedback from battle, maybe print to console if need be as a form of combat log, but Id rather not
         #Maybe a floating combat text kind of thing, like WoW but 2D, although may be difficult
+        #As long as there's some audiovisual feedback to the player
         
     def die(self):
         self.isDead = True

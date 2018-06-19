@@ -64,6 +64,7 @@ class GameScene(SceneBase):
         self.map = Mapper.Map(mapFile, "res\TileSheet.png", "res\AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
         self.player = Entities.Player(2,2,"res\playerSheet.png",self.tileMap,3,10)
+        #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
                              Entities.TestEnemy(5,7,self.tileMap),
                              Entities.TestEnemy(4,6,self.tileMap),
@@ -147,7 +148,7 @@ class GameScene(SceneBase):
             
     def backgroundRender(self, screen):
         self.animTiles = []
-        for x in range(int(abs(self.CameraX / Tiles.TILESIZE)), int(abs((self.CameraX / Tiles.TILESIZE)) + abs((Main.WIDTH / Tiles.TILESIZE)))):
+        for x in range(int(abs(self.CameraX / Tiles.TILESIZE)), int(abs(self.CameraX / Tiles.TILESIZE) + abs(Main.WIDTH / Tiles.TILESIZE))):
             for y in range(int(abs(self.CameraY / Tiles.TILESIZE)), int(abs((self.CameraY / Tiles.TILESIZE)) + abs((Main.HEIGHT / Tiles.TILESIZE)))):
                 self.tileMap[y][x].Render(screen, self.CameraX, self.CameraY)
                 if type(self.tileMap[y][x]) == Tiles.AnimTile or issubclass(type(self.tileMap[y][x]), Tiles.AnimTile):
