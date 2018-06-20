@@ -3,7 +3,7 @@ class SceneBase:
     def __init__(self, width, height):
         self.next = self
         self.width, self.height = width, height
-        self.KeyListener = Events.KeyListener()
+        self.KeyBinder = Events.KeyBinder()
     def ProcessInput(self, events, pressed_keys):
         print("ProcessInput not overwritten")
     def Update(self):
@@ -26,8 +26,9 @@ class TitleScene(SceneBase):
         self.toRender = []
         self.title = self.font.render("QWERTY", True, (50, 255, 128))
         self.start = self.font.render("Start", True, (0, 255, 128))
+        self.settings = self.font.render("Settings", True, (0, 255, 128))
         self.exit = self.font.render("Exit", True, (0, 255, 128))
-        self.toRender.extend([self.title, self.start, self.exit])
+        self.toRender.extend([self.title, self.start, self.settings, self.exit])
         self.option = 0
         self.msg = "Start"
         super().__init__(width, height)
@@ -35,27 +36,42 @@ class TitleScene(SceneBase):
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in self.KeyListener.SELECT:
+                if event.key in self.KeyBinder.SELECT:
+                    #Start
                     if self.option == 0:
+                        #Need to call the render function here somehow
                         self.msg = "Loading..."
                         self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
-                    if self.option == 1:
+                    #Settings
+                    elif self.option == 1:
+                        #need to stop multiple windows being opened
+                        Events.settingsWindow()
+                    #Exit
+                    elif self.option == 2:
                         self.Terminate()
-                elif event.key in self.KeyListener.DOWN:
-                    self.option = 1
-                elif event.key in self.KeyListener.UP:
-                    self.option = 0
+                elif event.key in self.KeyBinder.DOWN:
+                    self.option += 1
+                elif event.key in self.KeyBinder.UP:
+                    self.option -= 1
+                if self.option < 0: self.option = 0
+                if self.option > 2: self.option = 2
     def Update(self):
         if self.option == 0:
             self.toRender[1] = self.font.render(self.msg, True, (0, 255, 255))
-            self.toRender[2] = self.font.render("Exit", True, (50, 50, 50))
+            self.toRender[2] = self.font.render("Settings", True, (50, 50, 50))
+            self.toRender[3] = self.font.render("Exit", True, (50, 50, 50))
         elif self.option == 1:
             self.toRender[1] = self.font.render(self.msg, True, (50, 50, 50))
-            self.toRender[2] = self.font.render("Exit", True, (0, 255, 255))
+            self.toRender[2] = self.font.render("Settings", True, (0, 255, 255))
+            self.toRender[3] = self.font.render("Exit", True, (50, 50, 50))
+        elif self.option == 2:
+            self.toRender[1] = self.font.render(self.msg, True, (50, 50, 50))
+            self.toRender[2] = self.font.render("Settings", True, (50, 50, 50))
+            self.toRender[3] = self.font.render("Exit", True, (0, 255, 255))
     def Render(self, screen):
         screen.fill((255, 0, 0))
         for i in range(0,len(self.toRender)):
-            screen.blit(self.toRender[i], ((self.width / 2) - (self.title.get_width())/2, self.height / (len(self.toRender)-i) - (self.title.get_height())))
+            screen.blit(self.toRender[i], ((self.width / 2) - (self.title.get_width())/2, self.toRender[i].get_height()*i))
            
 class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
@@ -80,31 +96,31 @@ class GameScene(SceneBase):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 self.player.handleInputs(event)
-                if event.key in self.KeyListener.UP:
+                if event.key in self.KeyBinder.UP:
                     self.player.animRow = 1
                     self.player.flip = False
                     self.renderedBack = False
                     if self.player.Move(0,-1, self.CameraX, self.CameraY, self.Entities):
                         self.CameraY += Tiles.TILESIZE
-                elif event.key in self.KeyListener.DOWN:
+                elif event.key in self.KeyBinder.DOWN:
                     self.player.animRow = 0
                     self.player.flip = False
                     self.renderedBack = False
                     if self.player.Move(0,+1, self.CameraX, self.CameraY, self.Entities):
                         self.CameraY -= Tiles.TILESIZE
-                elif event.key in self.KeyListener.LEFT:
+                elif event.key in self.KeyBinder.LEFT:
                     self.player.animRow = 2
                     self.player.flip = True
                     self.renderedBack = False
                     if self.player.Move(-1,0, self.CameraX, self.CameraY, self.Entities):
                         self.CameraX += Tiles.TILESIZE
-                elif event.key in self.KeyListener.RIGHT:
+                elif event.key in self.KeyBinder.RIGHT:
                     self.player.animRow = 2
                     self.player.flip = False
                     self.renderedBack = False
                     if self.player.Move(1,0, self.CameraX, self.CameraY, self.Entities):
                         self.CameraX -= Tiles.TILESIZE
-                for commands in self.KeyListener.MOVECMND:
+                for commands in self.KeyBinder.MOVECMND:
                     if event.key in commands:
                         for each in self.Entities[1::]:
                             each.move(self.player.x, self.player.y, self.Entities)
@@ -168,7 +184,7 @@ class EndScene(SceneBase):
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in self.KeyListener.SELECT:
+                if event.key in self.KeyBinder.SELECT:
                     self.Terminate()
                 
     def Update(self):

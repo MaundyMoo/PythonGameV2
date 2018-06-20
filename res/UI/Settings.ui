@@ -126,7 +126,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="ControlsRETURN_BindingLabel">
+          <widget class="QLabel" name="ControlsSELECT_BindingLabel">
            <property name="text">
             <string/>
            </property>
@@ -279,14 +279,14 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QPushButton" name="ControlsRETURN_Button">
+        <widget class="QPushButton" name="ControlsSELECT_Button">
          <property name="text">
           <string>Rebind Select</string>
          </property>
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="ControlsRETURN_Label">
+        <widget class="QLabel" name="ControlsSELECT_Label">
          <property name="font">
           <font>
            <pointsize>24</pointsize>
@@ -439,7 +439,7 @@
      <x>0</x>
      <y>0</y>
      <width>796</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
