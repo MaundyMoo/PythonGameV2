@@ -31,6 +31,7 @@ class TitleScene(SceneBase):
         self.toRender.extend([self.title, self.start, self.settings, self.exit])
         self.option = 0
         self.msg = "Start"
+        self.switchScene = False
         super().__init__(width, height)
 
     def ProcessInput(self, events, pressed_keys):
@@ -41,10 +42,10 @@ class TitleScene(SceneBase):
                     if self.option == 0:
                         #Need to call the render function here somehow
                         self.msg = "Loading..."
-                        self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
+                        self.switchScene = True
                     #Settings
                     elif self.option == 1:
-                        #need to stop multiple windows being opened
+                        #need to stop multiple windows being after the first one is closed
                         Events.settingsWindow()
                     #Exit
                     elif self.option == 2:
@@ -72,6 +73,8 @@ class TitleScene(SceneBase):
         screen.fill((255, 0, 0))
         for i in range(0,len(self.toRender)):
             screen.blit(self.toRender[i], ((self.width / 2) - (self.title.get_width())/2, self.toRender[i].get_height()*i))
+        if self.switchScene:
+            self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
            
 class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
@@ -123,7 +126,7 @@ class GameScene(SceneBase):
                 for commands in self.KeyBinder.MOVECMND:
                     if event.key in commands:
                         for each in self.Entities[1::]:
-                            each.move(self.player.x, self.player.y, self.Entities)
+                            each.move(self.player, self.Entities)
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative
@@ -161,7 +164,8 @@ class GameScene(SceneBase):
             each.Render(screen, self.CameraX, self.CameraY)
         self.tileMap[self.player.y][self.player.x].Render(screen, self.CameraX, self.CameraY)
         self.player.Render(screen, self.CameraX, self.CameraY)
-            
+    
+    #Used to redraw the tiles in the background after the player character moves
     def backgroundRender(self, screen):
         self.animTiles = []
         for x in range(int(abs(self.CameraX / Tiles.TILESIZE)), int(abs(self.CameraX / Tiles.TILESIZE) + abs(Main.WIDTH / Tiles.TILESIZE))):

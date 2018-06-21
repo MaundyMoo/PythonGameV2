@@ -22,23 +22,43 @@ class Settings(QtGui.QMainWindow, settingsUI):
         self.KeyBinds = ET.parse('controls.xml').getroot()
         self.readControls()
         self.ControlsUP_Button.clicked.connect(self.rebindUP)
+        self.ControlsDOWN_Button.clicked.connect(self.rebindDOWN)
+        self.ControlsLEFT_Button.clicked.connect(self.rebindLEFT)
+        self.ControlsRIGHT_Button.clicked.connect(self.rebindRIGHT)
+        self.ControlsSELECT_Button.clicked.connect(self.rebindSELECT)
     def readControls(self):
-        self.ControlsUP_BindingLabel.setText(str(eval(self.KeyBinds.find('UP').text)))
-        self.ControlsDOWN_BindingLabel.setText(str(eval(self.KeyBinds.find('DOWN').text)))
-        self.ControlsLEFT_BindingLabel.setText(str(eval(self.KeyBinds.find('LEFT').text)))
-        self.ControlsRIGHT_BindingLabel.setText(str(eval(self.KeyBinds.find('RIGHT').text)))
-        self.ControlsSELECT_BindingLabel.setText(str(eval(self.KeyBinds.find('SELECT').text)))
+        #This is horrible but I can't think of another way of rewriting this for now because Im terrible
+        controlsUP, controlsDOWN, controlsLEFT, controlsRIGHT, controlsSELECT = [], [], [], [], []
+        for each in eval(self.KeyBinds.find('UP').text):
+            controlsUP.append(pygame.key.name(each))
+        for each in eval(self.KeyBinds.find('DOWN').text):
+            controlsDOWN.append(pygame.key.name(each))
+        for each in eval(self.KeyBinds.find('LEFT').text):
+            controlsLEFT.append(pygame.key.name(each))
+        for each in eval(self.KeyBinds.find('RIGHT').text):
+            controlsRIGHT.append(pygame.key.name(each))
+        for each in eval(self.KeyBinds.find('SELECT').text):
+            controlsSELECT.append(pygame.key.name(each))
+        self.ControlsUP_BindingLabel.setText(str(controlsUP).strip("[]").upper())
+        self.ControlsDOWN_BindingLabel.setText(str(controlsDOWN).strip('[]').upper())
+        self.ControlsLEFT_BindingLabel.setText(str(controlsLEFT).strip('[]').upper())
+        self.ControlsRIGHT_BindingLabel.setText(str(controlsRIGHT).strip('[]').upper())
+        self.ControlsSELECT_BindingLabel.setText(str(controlsSELECT).strip('[]').upper())
     #Need to learn how to read a single keystroke
     def rebindUP(self):
-        pass
+        print("Rebind Up")
+        #Pygame events only work when in focus, but QtEvent uses different codes for each character, presumably the ASCII / unicode value
+        pygame.event.clear()
+        pygame.event.wait()
+        print(pygame.event.get())
     def rebindDOWN(self):
-        pass
+        print("Rebind Down")
     def rebindLEFT(self):
-        pass
+        print("Rebind Left")
     def rebindRIGHT(self):
-        pass
+        print("Rebind Right")
     def rebindSELECT(self):
-        pass
+        print("Rebind Select")
 #Driver for instantiating the Settings Class
 def settingsWindow():
     app = QtGui.QApplication(sys.argv)

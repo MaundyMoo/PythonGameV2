@@ -125,6 +125,10 @@ class Player(Entity):
     def die(self):
         self.isDead = True
 
+    def getX(self):
+        return self.x
+    def getY(self): 
+        return self.y
 class Enemy(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
         super().__init__(x, y, spritesheet, map, frames, interval)
@@ -136,9 +140,14 @@ class Enemy(Entity):
         if self.health <= 0:
             self.die()
             
-    def move(self, playerX, playerY, entities):
+    def move(self, player, entities):
         #Currently just runs straight towards the player, checking only the tiles around it, need to replace with an actual path finding algorithm, e.g. A*
+        for each in entities:
+            print(each)
+            #Player shouldn't be on this list?
         dY, dX = 0, 0
+        playerX = player.getX()
+        playerY = player.getY()
         #check y
         if playerY > self.y:
             dY = 1
@@ -164,6 +173,8 @@ class Enemy(Entity):
                     if (self.y, self.x + dX) == (each.y, each.x):
                         dX = 0
                         break   
+        if self.y + dY == playerY and self.x + dX == playerX:
+            print("fight")
         self.y += dY; self.x += dX
         if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
             self.health -= self.map[self.y][self.x].damageValue
