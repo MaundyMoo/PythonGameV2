@@ -42,7 +42,7 @@ class Player(Entity):
 
         #Health
         self.isDead = False
-        self.maxHealth = 5
+        self.maxHealth = 20
         self.health = self.maxHealth
         #Health bar drawing
         self.healthBarHeight = 20
@@ -112,7 +112,9 @@ class Player(Entity):
             return False
     def handleInputs(self, input):
         pass
+    #This is called when the player initiates an attack on an enemy by walking into them
     def Combat(self, enemy):
+        enemy.TurnCombat = True
         if enemy.health < self.Damage:
             enemy.die()
         else:
@@ -121,7 +123,9 @@ class Player(Entity):
         #Display some visual feedback from battle, maybe print to console if need be as a form of combat log, but Id rather not
         #Maybe a floating combat text kind of thing, like WoW but 2D, although may be difficult
         #As long as there's some audiovisual feedback to the player
-        
+    #This is called when a player gets attacked by an enemy without the player doing any attack
+    def Attacked(self, enemy):   
+        self.health -= enemy.Damage
     def die(self):
         self.isDead = True
 
@@ -134,6 +138,8 @@ class Enemy(Entity):
         super().__init__(x, y, spritesheet, map, frames, interval)
         self.maxHealth = self.health = self.Damage= 0
         self.isDead = False
+        #Stops the combat and Attacked methods being called both in one turn
+        self.TurnCombat = False
         
     def Update(self):
         super().Update()
@@ -142,9 +148,6 @@ class Enemy(Entity):
             
     def move(self, player, entities):
         #Currently just runs straight towards the player, checking only the tiles around it, need to replace with an actual path finding algorithm, e.g. A*
-        for each in entities:
-            print(each)
-            #Player shouldn't be on this list?
         dY, dX = 0, 0
         playerX = player.getX()
         playerY = player.getY()
@@ -174,7 +177,8 @@ class Enemy(Entity):
                         dX = 0
                         break   
         if self.y + dY == playerY and self.x + dX == playerX:
-            print("fight")
+            dY, dX = 0, 0
+            if not self.TurnCombat: player.Attacked(self)
         self.y += dY; self.x += dX
         if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
             self.health -= self.map[self.y][self.x].damageValue

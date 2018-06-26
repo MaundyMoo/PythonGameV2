@@ -47,6 +47,7 @@ class TitleScene(SceneBase):
                     elif self.option == 1:
                         #need to stop multiple windows being after the first one is closed
                         Events.settingsWindow()
+                        self.SwitchToScene(SettingsScene(self.width, self.height))
                     #Exit
                     elif self.option == 2:
                         self.Terminate()
@@ -75,6 +76,18 @@ class TitleScene(SceneBase):
             screen.blit(self.toRender[i], ((self.width / 2) - (self.title.get_width())/2, self.toRender[i].get_height()*i))
         if self.switchScene:
             self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
+            
+#May have to abandon PyQt for controls although Idk
+class SettingsScene(SceneBase):
+    def __init__(self, width, height):
+        self.option = 0
+        super().__init__(width, height)
+    def ProcessInput(self, events, pressed_keys):
+        pass
+    def Update(self):
+        pass
+    def Render(self, screen):
+        screen.fill((128, 128, 255))
            
 class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
@@ -126,7 +139,7 @@ class GameScene(SceneBase):
                 for commands in self.KeyBinder.MOVECMND:
                     if event.key in commands:
                         for each in self.Entities[1::]:
-                            each.move(self.player, self.Entities)
+                            each.move(self.player, self.Entities[1::])
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative

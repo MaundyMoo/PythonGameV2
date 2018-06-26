@@ -48,7 +48,7 @@ HEIGHT = 448 #448
 LEVELCOUNT = 0
 if __name__ == "__main__":
     import pygame, os
-    import SceneBase as Scene
+    import Scenes as Scene
     #Change the directory so the terminal is looking at where the file is being run from
     dir_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(dir_path)
