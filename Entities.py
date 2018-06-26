@@ -1,12 +1,14 @@
 import Main, Image, pygame, Tiles, Events
 class Entity:
-    def __init__(self, x, y, spritesheet, map, frames, interval):
+    def __init__(self, x, y, spritesheet, map, frames, interval, colour = (255,0,0)):
         self.x, self.y, self.map = x, y, map
         
         #Sprite / Animation initialisation
         self.flip = False
         self.spriteSheet = Image.SpriteSheet(spritesheet, 32)
-        self.sprite = self.ImgToSprite(self.spriteSheet.returnTile(0, 0))
+        spr = self.spriteSheet.returnTile(0, 0)
+        self.sprite = self.ImgToSprite(spr)
+        self.damageSprite = Image.spriteFlash(spr, colour)
         self.sprite = pygame.transform.scale(self.sprite, (Tiles.TILESIZE, Tiles.TILESIZE))
         
         self.frames = frames

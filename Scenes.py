@@ -31,7 +31,6 @@ class TitleScene(SceneBase):
         self.toRender.extend([self.title, self.start, self.settings, self.exit])
         self.option = 0
         self.msg = "Start"
-        self.switchScene = False
         super().__init__(width, height)
 
     def ProcessInput(self, events, pressed_keys):
@@ -40,9 +39,7 @@ class TitleScene(SceneBase):
                 if event.key in self.KeyBinder.SELECT:
                     #Start
                     if self.option == 0:
-                        #Need to call the render function here somehow
-                        self.msg = "Loading..."
-                        self.switchScene = True
+                        self.SwitchToScene(LoadingScene(self.width, self.height))
                     #Settings
                     elif self.option == 1:
                         #need to stop multiple windows being after the first one is closed
@@ -74,9 +71,23 @@ class TitleScene(SceneBase):
         screen.fill((255, 0, 0))
         for i in range(0,len(self.toRender)):
             screen.blit(self.toRender[i], ((self.width / 2) - (self.title.get_width())/2, self.toRender[i].get_height()*i))
-        if self.switchScene:
+
+class LoadingScene(SceneBase):
+    def __init__(self, width, height):
+        super().__init__(width, height)
+        self.font = pygame.font.SysFont("arial", 64)
+        self.msg = self.font.render("Loading", True, (0, 0, 255))
+        self.hasRendered = False
+    def Update(self):
+        if self.hasRendered:
             self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
-            
+    def ProcessInput(self, events, pressed_keys):
+        pass
+    def Render(self, screen):
+        screen.fill((128, 128, 255))
+        screen.blit(self.msg, ((int(self.width / 2)) - int(self.msg.get_width()/2), int(self.height/2)-int(self.msg.get_height()/2)))
+        self.hasRendered = True
+        
 #May have to abandon PyQt for controls although Idk
 class SettingsScene(SceneBase):
     def __init__(self, width, height):
