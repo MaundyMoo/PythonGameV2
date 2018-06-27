@@ -83,33 +83,55 @@ class LoadingScene(SceneBase):
     def ProcessInput(self, events, pressed_keys):
         pass
     def Render(self, screen):
-        screen.fill((128, 128, 255))
+        screen.fill((128, 255, 128))
         screen.blit(self.msg, ((int(self.width / 2)) - int(self.msg.get_width()/2), int(self.height/2)-int(self.msg.get_height()/2)))
         self.hasRendered = True
         
-#May have to abandon PyQt for controls although Idk
 class SettingsScene(SceneBase):
     def __init__(self, width, height):
         super().__init__(width, height)
         self.font = pygame.font.SysFont("arial", 64)
         self.optionSelect = 0
-        self.options = ['Controls', 'Toggle Fullscreen', 'Main Menu']
-        #self.temp = self.options May need this if I don't want to create another scene as I can just change what is written to the screen
-        self.toRender = []
-        for each in self.options:
-            self.toRender.append(self.font.render(each, True, (50,50,50)))
+        self.options = ['Rebind Controls', 'View Controls', 'Main Menu']
+        #May need this if I don't want to create another scene as I can just change what is written to the screen
+        self.temp = self.options 
+        self.toRender = self.changeRender(self.options)
+        self.rebinding = False
+    def changeRender(self, options):
+        toRender = []
+        for each in options:
+            toRender.append(self.font.render(each, True, (50,50,50)))
+        return toRender
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in self.KeyBinder.SELECT:
-                    if self.optionSelect == 0:
-                        pass
-                        #Do I make another scene just for rebinding, or is that scene overkill at this point
-                    elif self.optionSelect == 1:
-                        #Main.FULLSCREEN = not Main.FULLSCREEN
-                        pass
-                    elif self.optionSelect == 2:
-                        self.SwitchToScene(TitleScene(self.width, self.height))
+                    if not self.rebinding:
+                        if self.optionSelect == 0:
+                            self.options = ['Rebind UP', 'Rebind DOWN', 'Rebind LEFT', 'Rebind RIGHT', 'Back']
+                            self.rebinding = True
+                            self.toRender = self.changeRender(self.options)
+                        if self.optionSelect == 1:
+                            pass
+                        elif self.optionSelect == 2:
+                            self.SwitchToScene(TitleScene(self.width, self.height))
+                    else:
+                        #UP
+                        if self.optionSelect == 0:
+                            pass
+                        #DOWN
+                        elif self.optionSelect == 1:
+                            pass
+                        #LEFT
+                        elif self.optionSelect == 2:
+                            pass
+                        #RIGHT
+                        elif self.optionSelect == 3:
+                            pass                   
+                        elif self.optionSelect == 4:
+                            self.rebinding = False
+                            self.options = self.temp
+                            self.toRender = self.changeRender(self.options)
                 elif event.key in self.KeyBinder.DOWN:
                     self.optionSelect += 1
                 elif event.key in self.KeyBinder.UP:

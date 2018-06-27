@@ -127,6 +127,7 @@ class Player(Entity):
         #As long as there's some audiovisual feedback to the player
     #This is called when a player gets attacked by an enemy without the player doing any attack
     def Attacked(self, enemy):   
+        enemy.TurnCombat = True
         self.health -= enemy.Damage
     def die(self):
         self.isDead = True
@@ -135,6 +136,7 @@ class Player(Entity):
         return self.x
     def getY(self): 
         return self.y
+        
 class Enemy(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
         super().__init__(x, y, spritesheet, map, frames, interval)
@@ -184,7 +186,8 @@ class Enemy(Entity):
         self.y += dY; self.x += dX
         if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
             self.health -= self.map[self.y][self.x].damageValue
-            
+        #Turn has resolved so the combat flag can be reset
+        self.TurnCombat = False
     def die(self):
         self.isDead = True
 #might do multiple classes, one for each enemy type
