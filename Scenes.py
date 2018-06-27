@@ -43,7 +43,6 @@ class TitleScene(SceneBase):
                     #Settings
                     elif self.option == 1:
                         #need to stop multiple windows being after the first one is closed
-                        Events.settingsWindow()
                         self.SwitchToScene(SettingsScene(self.width, self.height))
                     #Exit
                     elif self.option == 2:
@@ -70,7 +69,7 @@ class TitleScene(SceneBase):
     def Render(self, screen):
         screen.fill((255, 0, 0))
         for i in range(0,len(self.toRender)):
-            screen.blit(self.toRender[i], ((self.width / 2) - (self.title.get_width())/2, self.toRender[i].get_height()*i))
+            screen.blit(self.toRender[i], ((self.width / 2) - (self.toRender[i].get_width())/2, self.toRender[i].get_height()*i))
 
 class LoadingScene(SceneBase):
     def __init__(self, width, height):
@@ -91,14 +90,44 @@ class LoadingScene(SceneBase):
 #May have to abandon PyQt for controls although Idk
 class SettingsScene(SceneBase):
     def __init__(self, width, height):
-        self.option = 0
         super().__init__(width, height)
+        self.font = pygame.font.SysFont("arial", 64)
+        self.optionSelect = 0
+        self.options = ['Controls', 'Toggle Fullscreen', 'Main Menu']
+        #self.temp = self.options May need this if I don't want to create another scene as I can just change what is written to the screen
+        self.toRender = []
+        for each in self.options:
+            self.toRender.append(self.font.render(each, True, (50,50,50)))
     def ProcessInput(self, events, pressed_keys):
-        pass
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key in self.KeyBinder.SELECT:
+                    if self.optionSelect == 0:
+                        pass
+                        #Do I make another scene just for rebinding, or is that scene overkill at this point
+                    elif self.optionSelect == 1:
+                        #Main.FULLSCREEN = not Main.FULLSCREEN
+                        pass
+                    elif self.optionSelect == 2:
+                        self.SwitchToScene(TitleScene(self.width, self.height))
+                elif event.key in self.KeyBinder.DOWN:
+                    self.optionSelect += 1
+                elif event.key in self.KeyBinder.UP:
+                    self.optionSelect -= 1
     def Update(self):
-        pass
+        if self.optionSelect < 0:
+            self.optionSelect = 0
+        elif self.optionSelect > (len(self.options)-1):
+            self.optionSelect = len(self.options)-1
+        for i in range(0, len(self.toRender)):
+            if i == self.optionSelect:
+                self.toRender[i] = self.font.render(self.options[i], True, (200,0,128))
+            else:
+                self.toRender[i] = self.font.render(self.options[i], True, (50,50,50))
     def Render(self, screen):
         screen.fill((128, 128, 255))
+        for i in range(0,len(self.toRender)):
+            screen.blit(self.toRender[i], ((self.width / 2) - (self.toRender[i].get_width())/2, self.toRender[i].get_height()*i))
            
 class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
