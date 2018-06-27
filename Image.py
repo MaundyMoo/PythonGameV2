@@ -3,6 +3,8 @@ from PIL import Image as Img
 #This function returns a pygame styled image from a directory that can then be drawn onto the surface
 def getImage(path):
     image_library = {}
+    WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(WORKING_DIRECTORY, path) 
     image = image_library.get(path)
     if image == None:
             canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)

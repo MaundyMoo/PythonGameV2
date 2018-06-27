@@ -13,7 +13,9 @@ class KeyBinder:
         self.SELECT = eval(self.KeyBinds.find('SELECT').text)
         self.MOVECMND = [self.UP, self.DOWN, self.LEFT, self.RIGHT]
     #Probably dont need a class to do this (when am I ever going to initialise this more than once)
-settingsUI = uic.loadUiType("res/UI/Settings.ui")[0]
+WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+path = os.path.join(WORKING_DIRECTORY, "res/UI/Settings.ui") 
+settingsUI = uic.loadUiType(path)[0]
 class Settings(QtGui.QMainWindow, settingsUI):
     def __init__(self, parent=None):
         #Connects to window

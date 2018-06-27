@@ -194,7 +194,7 @@ class Enemy(Entity):
 class TestEnemy(Enemy):
     def __init__(self, x, y, map):
         #Entity Constants
-        spritesheet = "res\EnemySheet.png"; frames = 1; interval = 20; animRow = 0
+        spritesheet = "res/EnemySheet.png"; frames = 1; interval = 20; animRow = 0
         super().__init__(x, y, spritesheet, map, frames, interval, animRow)
         #Stats
         self.maxHealth = self.health = 5

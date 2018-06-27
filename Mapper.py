@@ -1,7 +1,9 @@
-import Tiles, Image
+import Tiles, Image, os
 from PIL import Image as Img
 class Map():
-    def __init__(self, mapPath, tileSheetPath, animTileSheetPath):
+    def __init__(self, path, tileSheetPath, animTileSheetPath):
+        WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+        mapPath = os.path.join(WORKING_DIRECTORY, path) 
         self.map = Img.open(mapPath)
         self.tileSheet = Image.SpriteSheet(tileSheetPath, 32)
         self.animTileSheet = Image.SpriteSheet(animTileSheetPath, 32)
@@ -41,7 +43,7 @@ class Map():
                     row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(1,0),False))
                 #MAGENTA : Transport
                 elif self.pixels[y][x] == (255,0,255):
-                    row.append(Tiles.TransportTile((x,y), self.tileSheet.returnTile(3,0), False, "res\map1.png"))
+                    row.append(Tiles.TransportTile((x,y), self.tileSheet.returnTile(3,0), False, "res/map1.png"))
                 #CYAN : ?
                 elif self.pixels[y][x] == (0,255,255):
                     pass

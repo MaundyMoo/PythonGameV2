@@ -79,7 +79,7 @@ class LoadingScene(SceneBase):
         self.hasRendered = False
     def Update(self):
         if self.hasRendered:
-            self.SwitchToScene(GameScene(self.width, self.height, "res\map.png"))
+            self.SwitchToScene(GameScene(self.width, self.height, "res/map.png"))
     def ProcessInput(self, events, pressed_keys):
         pass
     def Render(self, screen):
@@ -155,9 +155,9 @@ class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
     def __init__(self, width, height, mapFile):
         super().__init__(width, height)
-        self.map = Mapper.Map(mapFile, "res\TileSheet.png", "res\AnimTileSheet.png")
+        self.map = Mapper.Map(mapFile, "res/TileSheet.png", "res/AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
-        self.player = Entities.Player(2,2,"res\playerSheet.png",self.tileMap,3,10)
+        self.player = Entities.Player(2,2,"res/playerSheet.png",self.tileMap,3,10)
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
                              Entities.TestEnemy(5,7,self.tileMap),
