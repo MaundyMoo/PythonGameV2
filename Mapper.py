@@ -22,7 +22,7 @@ class Map():
         for y in range(0, len(self.pixels)):
             row = []
             for x in range(0, len(self.pixels[0])):
-            #Tile format (Position, sprite, collision, destructable)
+            #Tile format (Position, sprite, collision)
             #AnimTile format (gridPos, spritesheet,collision, animRow, NoOfFrames, timePeriod)
             #DamageTile format (gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue)
             #TransportTile format (gridPos, sprite, collision, destination)

@@ -1,5 +1,5 @@
 #Comment to test pull
-import pygame, image, Entities, Mapper, Tiles, Events, Main
+import pygame, image, Entities, Mapper, Tiles, Events, Main, Pathing
 class SceneBase:
     def __init__(self, width, height):
         self.next = self
@@ -158,6 +158,7 @@ class GameScene(SceneBase):
         super().__init__(width, height)
         self.map = Mapper.Map(mapFile, "res/TileSheet.png", "res/AnimTileSheet.png")
         self.tileMap = self.map.getTileMap()
+        self.grid = Pathing.AStar((5,5), self.tileMap)
         self.player = Entities.Player(2,2,"res/playerSheet.png",self.tileMap,3,10)
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
