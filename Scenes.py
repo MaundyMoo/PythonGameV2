@@ -93,6 +93,7 @@ class SettingsScene(SceneBase):
         super().__init__(width, height)
         self.font = pygame.font.SysFont("arial", 64)
         self.optionSelect = 0
+        self.Keys = Events.KeyBinder()
         self.options = ['Rebind Controls', 'View Controls', 'Main Menu']
         #May need this if I don't want to create another scene as I can just change what is written to the screen
         self.temp = self.options 
@@ -119,7 +120,7 @@ class SettingsScene(SceneBase):
                     else:
                         #UP
                         if self.optionSelect == 0:
-                            pass
+                            self.Keys.Rebind('UP')
                         #DOWN
                         elif self.optionSelect == 1:
                             pass

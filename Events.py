@@ -12,7 +12,17 @@ class KeyBinder:
         self.RIGHT  = eval(self.KeyBinds.find('RIGHT').text)
         self.SELECT = eval(self.KeyBinds.find('SELECT').text)
         self.MOVECMND = [self.UP, self.DOWN, self.LEFT, self.RIGHT]
-    #Probably dont need a class to do this (when am I ever going to initialise this more than once)
+    def Rebind(self, dir: str):
+        unbindableEvents = [pygame.MOUSEMOTION, pygame.KEYUP, pygame.ACTIVEEVENT]
+        pygame.event.set_blocked(unbindableEvents)
+        keys = []
+        for i in range(2):
+            #pygame.event.clear
+            pygame.event.clear()
+            keys.append(pygame.event.wait())
+        pygame.event.set_allowed(unbindableEvents)
+        print(keys)
+        #self.KeyBinds.find(dir)
 WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(WORKING_DIRECTORY, "res/UI/Settings.ui") 
 settingsUI = uic.loadUiType(path)[0]
