@@ -5,13 +5,24 @@ from PyQt4 import QtCore, QtGui, uic
 #Could create a PyQt application to edit controls rather than try a clunky pygame interface.
 class KeyBinder:
     def __init__(self):
-        self.KeyBinds = ET.parse('controls.xml').getroot()
-        self.UP     = eval(self.KeyBinds.find('UP').text)
-        self.DOWN   = eval(self.KeyBinds.find('DOWN').text)
-        self.LEFT   = eval(self.KeyBinds.find('LEFT').text)
-        self.RIGHT  = eval(self.KeyBinds.find('RIGHT').text)
-        self.SELECT = eval(self.KeyBinds.find('SELECT').text)
-        self.MOVECMND = [self.UP, self.DOWN, self.LEFT, self.RIGHT]
+        self.KeyBinds = ET.parse('controls.xml')
+        self.root = self.KeyBinds.getroot()
+        self.setBinds()
+    def setBinds(self):
+        try:
+            self.UP     = eval(self.KeyBinds.find('UP').text)
+            self.DOWN   = eval(self.KeyBinds.find('DOWN').text)
+            self.LEFT   = eval(self.KeyBinds.find('LEFT').text)
+            self.RIGHT  = eval(self.KeyBinds.find('RIGHT').text)
+            self.SELECT = eval(self.KeyBinds.find('SELECT').text)
+            self.MOVECMND = [self.UP, self.DOWN, self.LEFT, self.RIGHT]
+        except TypeError:
+            self.UP     = (self.KeyBinds.find('UP').text)
+            self.DOWN   = (self.KeyBinds.find('DOWN').text)
+            self.LEFT   = (self.KeyBinds.find('LEFT').text)
+            self.RIGHT  = (self.KeyBinds.find('RIGHT').text)
+            self.SELECT = (self.KeyBinds.find('SELECT').text)
+            self.MOVECMND = [self.UP, self.DOWN, self.LEFT, self.RIGHT]
     def Rebind(self, dir: str):
         unbindableEvents = [pygame.MOUSEMOTION, pygame.KEYUP, pygame.ACTIVEEVENT]
         pygame.event.set_blocked(unbindableEvents)
@@ -21,7 +32,9 @@ class KeyBinder:
             pygame.event.clear()
             keys.append(pygame.event.wait())
         pygame.event.set_allowed(unbindableEvents)
-        print(keys)
+        keys = (keys[0].key, keys[1].key)
+        self.KeyBinds.find('UP').text = keys
+        self.setBinds()
         #self.KeyBinds.find(dir)
 WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(WORKING_DIRECTORY, "res/UI/Settings.ui") 

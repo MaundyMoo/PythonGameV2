@@ -139,6 +139,7 @@ class SettingsScene(SceneBase):
                 elif event.key in self.KeyBinder.UP:
                     self.optionSelect -= 1
     def Update(self):
+        print(self.KeyBinder.UP)
         if self.optionSelect < 0:
             self.optionSelect = 0
         elif self.optionSelect > (len(self.options)-1):
