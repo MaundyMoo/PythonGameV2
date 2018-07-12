@@ -33,7 +33,8 @@ class KeyBinder:
             keys.append(pygame.event.wait())
         pygame.event.set_allowed(unbindableEvents)
         keys = (keys[0].key, keys[1].key)
-        self.KeyBinds.find('UP').text = keys
+        self.root.find('UP').text = str(keys)
+        self.KeyBinds.write('controls.xml')
         self.setBinds()
         #self.KeyBinds.find(dir)
 WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -46,11 +47,6 @@ class Settings(QtGui.QMainWindow, settingsUI):
         self.setupUi(self)
         self.KeyBinds = ET.parse('controls.xml').getroot()
         self.readControls()
-        self.ControlsUP_Button.clicked.connect(self.rebindUP)
-        self.ControlsDOWN_Button.clicked.connect(self.rebindDOWN)
-        self.ControlsLEFT_Button.clicked.connect(self.rebindLEFT)
-        self.ControlsRIGHT_Button.clicked.connect(self.rebindRIGHT)
-        self.ControlsSELECT_Button.clicked.connect(self.rebindSELECT)
     def readControls(self):
         #This is horrible but I can't think of another way of rewriting this for now because Im terrible
         controlsUP, controlsDOWN, controlsLEFT, controlsRIGHT, controlsSELECT = [], [], [], [], []
@@ -69,21 +65,6 @@ class Settings(QtGui.QMainWindow, settingsUI):
         self.ControlsLEFT_BindingLabel.setText(str(controlsLEFT).strip('[]').upper())
         self.ControlsRIGHT_BindingLabel.setText(str(controlsRIGHT).strip('[]').upper())
         self.ControlsSELECT_BindingLabel.setText(str(controlsSELECT).strip('[]').upper())
-    #Need to learn how to read a single keystroke
-    def rebindUP(self):
-        print("Rebind Up")
-        #Pygame events only work when in focus, but QtEvent uses different codes for each character, presumably the ASCII / unicode value
-        pygame.event.clear()
-        pygame.event.wait()
-        print(pygame.event.get())
-    def rebindDOWN(self):
-        print("Rebind Down")
-    def rebindLEFT(self):
-        print("Rebind Left")
-    def rebindRIGHT(self):
-        print("Rebind Right")
-    def rebindSELECT(self):
-        print("Rebind Select")
 #Driver for instantiating the Settings Class
 def settingsWindow():
     app = QtGui.QApplication(sys.argv)

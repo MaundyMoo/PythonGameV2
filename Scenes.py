@@ -109,12 +109,15 @@ class SettingsScene(SceneBase):
             if event.type == pygame.KEYDOWN:
                 if event.key in self.KeyBinder.SELECT:
                     if not self.rebinding:
+                        #Rebind Controls
                         if self.optionSelect == 0:
                             self.options = ['Rebind UP', 'Rebind DOWN', 'Rebind LEFT', 'Rebind RIGHT', 'Back']
                             self.rebinding = True
                             self.toRender = self.changeRender(self.options)
+                        #View Controls
                         if self.optionSelect == 1:
-                            pass
+                            Events.settingsWindow()
+                        #Main Menu
                         elif self.optionSelect == 2:
                             self.SwitchToScene(TitleScene(self.width, self.height))
                     else:
@@ -139,7 +142,6 @@ class SettingsScene(SceneBase):
                 elif event.key in self.KeyBinder.UP:
                     self.optionSelect -= 1
     def Update(self):
-        print(self.KeyBinder.UP)
         if self.optionSelect < 0:
             self.optionSelect = 0
         elif self.optionSelect > (len(self.options)-1):

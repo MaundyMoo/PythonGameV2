@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <Keybinds>
-    <UP>(pygame.K_w,pygame.K_UP)</UP>
+    <UP>(119, 273)</UP>
     <DOWN>(pygame.K_s,pygame.K_DOWN)</DOWN>
     <LEFT>(pygame.K_a,pygame.K_LEFT)</LEFT>
     <RIGHT>(pygame.K_d,pygame.K_RIGHT)</RIGHT>
