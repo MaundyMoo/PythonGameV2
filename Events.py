@@ -33,7 +33,7 @@ class KeyBinder:
             keys.append(pygame.event.wait())
         pygame.event.set_allowed(unbindableEvents)
         keys = (keys[0].key, keys[1].key)
-        self.root.find('UP').text = str(keys)
+        self.root.find(dir).text = str(keys)
         self.KeyBinds.write('controls.xml')
         self.setBinds()
         #self.KeyBinds.find(dir)

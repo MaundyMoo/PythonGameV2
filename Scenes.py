@@ -126,13 +126,13 @@ class SettingsScene(SceneBase):
                             self.Keys.Rebind('UP')
                         #DOWN
                         elif self.optionSelect == 1:
-                            pass
+                            self.Keys.Rebind('DOWN')
                         #LEFT
                         elif self.optionSelect == 2:
-                            pass
+                            self.Keys.Rebind('LEFT')
                         #RIGHT
                         elif self.optionSelect == 3:
-                            pass                   
+                            self.Keys.Rebind('RIGHT')  
                         elif self.optionSelect == 4:
                             self.rebinding = False
                             self.options = self.temp

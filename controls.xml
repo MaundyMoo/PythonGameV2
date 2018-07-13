@@ -1,7 +1,7 @@
 <Keybinds>
     <UP>(119, 273)</UP>
-    <DOWN>(pygame.K_s,pygame.K_DOWN)</DOWN>
-    <LEFT>(pygame.K_a,pygame.K_LEFT)</LEFT>
-    <RIGHT>(pygame.K_d,pygame.K_RIGHT)</RIGHT>
+    <DOWN>(115, 274)</DOWN>
+    <LEFT>(97, 276)</LEFT>
+    <RIGHT>(100, 275)</RIGHT>
     <SELECT>(pygame.K_RETURN,pygame.K_SPACE)</SELECT>
 </Keybinds>
