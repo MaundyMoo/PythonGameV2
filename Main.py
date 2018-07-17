@@ -3,7 +3,7 @@ def run(width, height, fps, scene):
     pygame.display.set_caption("QWERTY")
     clock = pygame.time.Clock()
     activeScene = scene
-    fullscreen = False
+    FULLSCREEN = False
     while activeScene != None:
         pressedKeys = pygame.key.get_pressed()
         #Event filtering - Detects if user wants to close the game, otherwise sends inputs to be handled by scene
@@ -18,8 +18,8 @@ def run(width, height, fps, scene):
                 if event.key == pygame.K_F4 and alt_pressed:
                     quit_attempt = True
                 if (event.key == pygame.K_RETURN and alt_pressed) or event.key == pygame.K_F11:
-                    fullscreen = not fullscreen
-                    if fullscreen:
+                    FULLSCREEN = not FULLSCREEN
+                    if FULLSCREEN:
                         pygame.display.set_mode((width, height), pygame.FULLSCREEN)
                     else:
                         pygame.display.set_mode((width, height))
@@ -48,7 +48,7 @@ HEIGHT = 448 #448
 LEVELCOUNT = 0
 if __name__ == "__main__":
     import pygame, os
-    import SceneBase as Scene
+    import Scenes as Scene
     #Change the directory so the terminal is looking at where the file is being run from
     dir_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(dir_path)
