@@ -3,7 +3,7 @@ tileSize = TILESIZE = 64
 class Tile:
     #Tiles will always be square
     TILESIZE = tileSize
-    def __init__(self, gridPos, sprite, collision):
+    def __init__(self, gridPos: tuple, sprite, collision: bool):
         #Pygame cannot natively read PIL png formats, so have to convert to string to let pygame read it
         self.sprite = pygame.image.fromstring(sprite.tobytes(), sprite.size, sprite.mode)
         self.sprite = pygame.transform.scale(self.sprite, (self.TILESIZE, self.TILESIZE))
@@ -11,15 +11,15 @@ class Tile:
         self.collision = collision  
 
         self.pos = gridPos
-    def Render(self, screen, OffsetX, OffsetY):
+    def Render(self, screen, OffsetX: int, OffsetY: int):
         screen.blit(self.sprite, ((self.pos[0] * self.TILESIZE) + OffsetX, (self.pos[1] * self.TILESIZE) + OffsetY))
     def Update(self):
         pass
-    def isCollidable(self):
+    def isCollidable(self) -> bool:
         return self.collision
     
 class AnimTile(Tile):
-    def __init__(self, gridPos, spritesheet,collision, animRow, NoOfFrames, timePeriod):
+    def __init__(self, gridPos: tuple, spritesheet: str, collision: bool, animRow: int, NoOfFrames: int, timePeriod: int):
         self.NoOfFrames = NoOfFrames
         self.timePeriod = timePeriod
         self.spriteSheet = spritesheet
