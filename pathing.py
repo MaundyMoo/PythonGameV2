@@ -20,7 +20,7 @@ class AStar:
                     row.append(0)
             abstract.append(row)
         return abstract
-#Im not too sure if Ill need a node object but it's here just in case
+#Im not too sure if I'll need a node object but it's here just in case
 class Node:
     def __init__(self):
         pass

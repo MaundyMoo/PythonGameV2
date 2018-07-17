@@ -1,11 +1,12 @@
 #Class to allow custom input mappings
 import pygame, xml.etree.ElementTree as ET
-import sys, os
+import sys, os, Main
 from PyQt4 import QtCore, QtGui, uic
 #Could create a PyQt application to edit controls rather than try a clunky pygame interface.
 class KeyBinder:
     def __init__(self):
-        self.KeyBinds = ET.parse('controls.xml')
+        self.path = Main.getPath('controls.xml')
+        self.KeyBinds = ET.parse(self.path)
         self.root = self.KeyBinds.getroot()
         self.setBinds()
     def setBinds(self):
@@ -34,18 +35,18 @@ class KeyBinder:
         pygame.event.set_allowed(unbindableEvents)
         keys = (keys[0].key, keys[1].key)
         self.root.find(dir).text = str(keys)
-        self.KeyBinds.write('controls.xml')
+        self.KeyBinds.write(self.path)
         self.setBinds()
         #self.KeyBinds.find(dir)
-WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-path = os.path.join(WORKING_DIRECTORY, "res/UI/Settings.ui") 
+path = Main.getPath("res/UI/Settings.ui") 
 settingsUI = uic.loadUiType(path)[0]
 class Settings(QtGui.QMainWindow, settingsUI):
     def __init__(self, parent=None):
         #Connects to window
         QtGui.QMainWindow.__init__(self, parent)
         self.setupUi(self)
-        self.KeyBinds = ET.parse('controls.xml').getroot()
+        self.path = Main.getPath('controls.xml')
+        self.KeyBinds = ET.parse(self.path).getroot()
         self.readControls()
     def readControls(self):
         #This is horrible but I can't think of another way of rewriting this for now because Im terrible

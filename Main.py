@@ -1,3 +1,8 @@
+import os
+def getPath(path):
+    WORKING_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(WORKING_DIRECTORY, path)
+
 def run(width, height, fps, scene):
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("QWERTY")
@@ -47,7 +52,7 @@ HEIGHT = 448 #448
 
 LEVELCOUNT = 0
 if __name__ == "__main__":
-    import pygame, os
+    import pygame
     import Scenes as Scene
     #Change the directory so the terminal is looking at where the file is being run from
     dir_path = os.path.dirname(os.path.realpath(__file__))

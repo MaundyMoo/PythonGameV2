@@ -80,7 +80,8 @@ class LoadingScene(SceneBase):
         self.hasRendered = False
     def Update(self):
         if self.hasRendered:
-            self.SwitchToScene(GameScene(self.width, self.height, "res/map.png"))
+            path = Main.getPath("res/map.png")
+            self.SwitchToScene(GameScene(self.width, self.height, path))
     def ProcessInput(self, events, pressed_keys):
         pass
     def Render(self, screen):
@@ -161,7 +162,9 @@ class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
     def __init__(self, width, height, mapFile):
         super().__init__(width, height)
-        self.map = Mapper.Map(mapFile, "res/TileSheet.png", "res/AnimTileSheet.png")
+        path1 = Main.getPath("res/TileSheet.png")
+        path2 = Main.getPath("res/AnimTileSheet.png")
+        self.map = Mapper.Map(mapFile, path1, path2)
         self.tileMap = self.map.getTileMap()
         self.grid = Pathing.AStar((5,5), self.tileMap)
         self.player = Entities.Player(2,2,"res/playerSheet.png",self.tileMap,3,10)
