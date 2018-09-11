@@ -3,7 +3,7 @@ tileSize = TILESIZE = 64
 class Tile:
     #Tiles will always be square
     TILESIZE = tileSize
-    def __init__(self, gridPos: tuple, sprite, collision: bool):
+    def __init__(self, gridPos: tuple, sprite, collision: bool, cost = 1: int):
         #Pygame cannot natively read PIL png formats, so have to convert to string to let pygame read it
         self.sprite = pygame.image.fromstring(sprite.tobytes(), sprite.size, sprite.mode)
         self.sprite = pygame.transform.scale(self.sprite, (self.TILESIZE, self.TILESIZE))

@@ -166,7 +166,6 @@ class GameScene(SceneBase):
         path2 = Main.getPath("res/AnimTileSheet.png")
         self.map = Mapper.Map(mapFile, path1, path2)
         self.tileMap = self.map.getTileMap()
-        self.grid = Pathing.AStar((5,5), self.tileMap)
         self.player = Entities.Player(2,2,"res/playerSheet.png",self.tileMap,3,10)
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),

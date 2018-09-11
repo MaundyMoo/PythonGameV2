@@ -1,3 +1,30 @@
+#Turn Map into a grid made of nodes where walkable tiles become nodes / edges
+class Graph():
+    def __init__(self, tileMap):
+        self.grid = self.generateGraph(tileMap)
+    def generateGraph(self, map):
+        graph = []
+        for y in range(0, len(map)):
+            row = []
+            for x in range(0, len(map[0])):
+                if not map[y][x].isCollidable():
+                    #map[y][x].getCost()
+                    node = Node(map[y][x].getCost())
+                    row.append(node)
+                else:
+                    row.append('NULL')
+            graph.append(row)
+        return graph
+    def neighbours(self, node):
+        return 'This needs to be completed'
+class Node():
+    #Have a cost attribute?
+    def __init__(self, cost):
+        pass
+    def getCost(self):
+        pass
+
+'''
 class AStar:
     def __init__(self, dest: tuple, grid: list):
         self.dest = dest
@@ -24,3 +51,4 @@ class AStar:
 class Node:
     def __init__(self):
         pass
+'''
