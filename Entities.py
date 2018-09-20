@@ -1,4 +1,4 @@
-import Main, Image, pygame, Tiles, Events
+import Main, Image, pygame, Tiles, Events, Pathing
 class Entity:
     def __init__(self, x, y, spritesheet, map, frames, interval, colour = (255,0,0)):
         self.x, self.y, self.map = x, y, map
@@ -200,3 +200,7 @@ class TestEnemy(Enemy):
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1
+    def move(self, graph, player):
+        path = Pathing.FindPath(graph, graph.getNode(player.y, player.x), graph.getNode(self.y, self.x))
+        self.x = path[0].x
+        self.y = path[0].y

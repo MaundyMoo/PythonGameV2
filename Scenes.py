@@ -25,7 +25,7 @@ class TitleScene(SceneBase):
     def __init__(self, width, height):
         self.font = pygame.font.SysFont("arial", 64)
         self.toRender = []
-        self.title = self.font.render("QWERTY", True, (50, 255, 128))
+        self.title = self.font.render("Coursework", True, (50, 255, 128))
         self.start = self.font.render("Start", True, (0, 255, 128))
         self.settings = self.font.render("Settings", True, (0, 255, 128))
         self.exit = self.font.render("Exit", True, (0, 255, 128))
@@ -166,6 +166,9 @@ class GameScene(SceneBase):
         path2 = Main.getPath("res/AnimTileSheet.png")
         self.map = Mapper.Map(mapFile, path1, path2)
         self.tileMap = self.map.getTileMap()
+        
+        self.graph = Pathing.Graph(self.tileMap)
+        
         self.player = Entities.Player(2,2,"res/playerSheet.png",self.tileMap,3,10)
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
@@ -209,8 +212,11 @@ class GameScene(SceneBase):
                         self.CameraX -= Tiles.TILESIZE
                 for commands in self.KeyBinder.MOVECMND:
                     if event.key in commands:
+                        #path = Pathing.FindPath(self.graph.grid, self.graph.grid[self.player.y][self.player.x])
                         for each in self.Entities[1::]:
-                            each.move(self.player, self.Entities[1::])
+                            #each.move(self.player, self.Entities[1::])
+                            
+                            each.move(self.graph, self.player)
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative
