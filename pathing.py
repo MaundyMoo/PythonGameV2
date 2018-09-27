@@ -2,8 +2,8 @@
 #Turn Map into a grid made of nodes where walkable tiles become nodes / edges
 #I dont know how to make edges D:
 from queue import PriorityQueue
-from Main import WIDTH, HEIGHT
-from Tiles import TILESIZE
+#from Main import WIDTH, HEIGHT
+#from Tiles import TILESIZE
 class Graph():
     def __init__(self, tileMap):
         self.grid = self.generateGraph(tileMap)
@@ -33,10 +33,8 @@ class Node:
         result = []
         for dir in dirs:
             try:
-                if self.x == 0 and self.y == 0:
-                    continue
-                if self.x == 0 or self.x == WIDTH/TILESIZE: dir[1] == 0
-                if self.y == 0 or self.y == HEIGHT/TILESIZE: dir[0] == 0
+                if self.x == 0 or self.x == len(grid[0]): dir[1] == 0
+                if self.y == 0 or self.y == len(grid): dir[0] == 0
                 neighbor = grid[self.y + dir[0]][self.x + dir[1]]
             except IndexError:
                continue
@@ -53,6 +51,8 @@ class Node:
         return self.getCost() < node.getCost()
    
 #Astar      
+#Probably need to refactor my code so that I have a list of cost integers rather than a list of objects that have a cost attribute
+#Actually I definitaly do, idk why I thought that was a good idea
 def heuristic(node1, node2):
    # Manhattan distance on a square grid
    return abs(node1.x - node2.x) + abs(node1.y - node2.y)
