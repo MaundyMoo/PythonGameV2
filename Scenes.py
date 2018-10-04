@@ -223,7 +223,7 @@ class GameScene(SceneBase):
                         for each in self.Entities[1::]:
                             #each.move(self.player, self.Entities[1::])
                             
-                            each.move(self.graph, self.player)
+                            each.move(self.graph, self.player, self.Entities[1::])
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative

@@ -149,9 +149,8 @@ class Enemy(Entity):
         super().Update()
         if self.health <= 0:
             self.die()
-            
+    #OBSELETE move method, keeping here just in case idk
     def move(self, player, entities):
-        #Currently just runs straight towards the player, checking only the tiles around it, need to replace with an actual path finding algorithm, e.g. A*
         dY, dX = 0, 0
         playerX = player.getX()
         playerY = player.getY()
@@ -200,8 +199,18 @@ class TestEnemy(Enemy):
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1
-    def move(self, graph, player):
+    #TODO Factor in Combat and not moving if the position is already occupied
+    def move(self, graph, player, entities):
         path = graph.Astar([self.y, self.x], [player.y, player.x])
-        #print(path)
-        self.x = path[0][1]
-        self.y = path[0][0]
+        playerCoords, nextCoords = tuple([player.x, player.y]), tuple([path[0][1], path[0][0]])
+        willMove = True
+        for each in entities:
+            if nextCoords == (each.x, each.y):
+                willMove = False
+                break
+        if not nextCoords == playerCoords and willMove:
+            self.x = path[0][1]
+            self.y = path[0][0]
+        elif nextCoords == playerCoords:
+            player.Attacked(self)
+        self.TurnCombat = False
