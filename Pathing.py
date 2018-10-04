@@ -13,15 +13,22 @@ class Graph():
             row = []
             for x in range(0, len(map[0])):
                 if not map[y][x].isCollidable():
-                    node = Node(map[y][x].getCost(), y, x)
-                    row.append(node)
+                    row.append([x, y, map[y][x].getCost()])
                 else:
                     row.append(None)
             graph.append(row)
         return graph
-    def getNode(self, y, x):
-        return self.grid[y][x]
-        
+    #node argument is a 1D list from the 2D graph, attempting this way rather than using the previous method of node objects as iterating through python objects, I believe, is slower than iterating over simple lists and ints
+    def neighbors(node: list) -> list:
+        dirs = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+        result = []
+        for dir in dirs:
+            neighbor = [node[0] + dir[0], node[1] + dir[1]]
+            #Bounds the edges to within the grid
+            if 0 <= neighbour[0] < len(self.grid) and 0 <= neighbour[1] < len(self.grid[0]):
+                result.append([node[0] + dir[0], node[1] + dir[1]])
+        return result
+'''        
 class Node:
     def __init__(self, cost, y, x):
         self.cost = cost
@@ -90,3 +97,4 @@ def reconstruct_path(came_from, start, goal):
     #path.append(start) # optional
     path.reverse() # optional
     return path
+'''
