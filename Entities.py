@@ -202,5 +202,6 @@ class TestEnemy(Enemy):
         self.Damage = 1
     def move(self, graph, player):
         path = graph.Astar([self.y, self.x], [player.y, player.x])
-        self.x = path[0].x
-        self.y = path[0].y
+        #print(path)
+        self.x = path[0][1]
+        self.y = path[0][0]

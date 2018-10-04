@@ -27,7 +27,7 @@ class Graph():
             #Bounds the edges to within the grid
             if 0 <= neighbour[0] < len(self.grid) and 0 <= neighbour[1] < len(self.grid[0]) and not self.getCost(neighbour) == None:
                 result.append([node[0] + dir[0], node[1] + dir[1]])
-        return result
+        return tuple(result)
     def getCost(self, node):
         try:
             return self.grid[node[0]][node[1]][2]
@@ -41,6 +41,10 @@ class Graph():
         return abs(x1 - x2) + abs(y1 - y2)
 
     def Astar(self, start, goal):
+        #Can't use lists as keys
+        start = tuple(start)
+        goal = tuple(goal)
+
         frontier = PriorityQueue()
         frontier.put(start, 0)
         came_from = {}
@@ -55,13 +59,14 @@ class Graph():
                 break
             
             for next in self.neighbours(current):
+                next = tuple(next)
                 new_cost = cost_so_far[current] + self.getCost(next)
                 if next not in cost_so_far or new_cost < cost_so_far[next]:
                     cost_so_far[next] = new_cost
                     priority = new_cost + self.heuristic(goal, next)
                     frontier.put(next, priority)
                     came_from[next] = current
-        
+        #print(came_from, start, goal)
         return self.reconstruct_path(came_from, start, goal) #came_from, cost_so_far 
 
     def reconstruct_path(self, came_from, start, goal):
@@ -70,5 +75,6 @@ class Graph():
         while current != start:
             path.append(current)
             current = came_from[current]
-        path.append(start) # optional
+        #path.append(start) # optional
         path.reverse() # optional
+        return path
