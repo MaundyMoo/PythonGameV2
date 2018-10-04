@@ -200,9 +200,7 @@ class TestEnemy(Enemy):
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1
-    '''
     def move(self, graph, player):
-        path = Pathing.FindPath(graph, graph.getNode(player.y, player.x), graph.getNode(self.y, self.x))
+        path = graph.Astar([self.y, self.x], [player.y, player.x])
         self.x = path[0].x
         self.y = path[0].y
-    '''

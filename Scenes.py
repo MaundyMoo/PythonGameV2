@@ -169,6 +169,13 @@ class GameScene(SceneBase):
         
         self.graph = Pathing.Graph(self.tileMap)
         
+        #Testing Boundary conditions with the corners of the map (should only print two nodes)
+        '''
+        print(self.graph.neighbours([0,0]))
+        print(self.graph.neighbours([len(self.tileMap)-1, len(self.tileMap[0])-1]))
+        print(self.graph.getCost([1,1]))
+        '''
+        
         self.player = Entities.Player(2,2,"res/playerSheet.png",self.tileMap,3,10)
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
@@ -214,9 +221,9 @@ class GameScene(SceneBase):
                     if event.key in commands:
                         #path = Pathing.FindPath(self.graph.grid, self.graph.grid[self.player.y][self.player.x])
                         for each in self.Entities[1::]:
-                            each.move(self.player, self.Entities[1::])
+                            #each.move(self.player, self.Entities[1::])
                             
-                            #each.move(self.graph, self.player)
+                            each.move(self.graph, self.player)
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative
