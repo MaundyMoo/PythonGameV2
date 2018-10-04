@@ -36,7 +36,7 @@ class Graph():
             
             
             
-    #TODO make this fit to my code 
+    #TODO make this fit to my code: Fix the list dictionary issue or rewrite this code section
     def heuristic(self, a, b):
         (x1, y1) = a
         (x2, y2) = b
@@ -60,11 +60,11 @@ class Graph():
                 new_cost = cost_so_far[current] + self.getCost(next)
                 if next not in cost_so_far or new_cost < cost_so_far[next]:
                     cost_so_far[next] = new_cost
-                    priority = new_cost + heuristic(goal, next)
+                    priority = new_cost + self.heuristic(goal, next)
                     frontier.put(next, priority)
                     came_from[next] = current
         
-        return reconstruct_path(came_from, start, goal) #came_from, cost_so_far 
+        return self.reconstruct_path(came_from, start, goal) #came_from, cost_so_far 
 
     def reconstruct_path(self, came_from, start, goal):
         current = goal
