@@ -72,4 +72,3 @@ class Graph():
             current = came_from[current]
         path.append(start) # optional
         path.reverse() # optional
-        return 
