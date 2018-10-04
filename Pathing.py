@@ -36,7 +36,7 @@ class Graph():
             
             
             
-    #TODO make this fit to my code: Fix the list dictionary issue or rewrite this code section
+    #TODO make this fit to my code: Fix the list dictionary issue or rewrite Astar my own way
     def heuristic(self, a, b):
         (x1, y1) = a
         (x2, y2) = b
