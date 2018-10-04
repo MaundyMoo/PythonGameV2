@@ -219,11 +219,8 @@ class GameScene(SceneBase):
                         self.CameraX -= Tiles.TILESIZE
                 for commands in self.KeyBinder.MOVECMND:
                     if event.key in commands:
-                        #path = Pathing.FindPath(self.graph.grid, self.graph.grid[self.player.y][self.player.x])
-                        for each in self.Entities[1::]:
-                            #each.move(self.player, self.Entities[1::])
-                            
-                            each.move(self.graph, self.player, self.Entities[1::])
+                        for each in self.Entities[1::]:                         
+                            each.move(self.graph, self.player, self.Entities[1::], self.tileMap)
             
     def Update(self):
     #Top left is (0,0) so offset is done in negative

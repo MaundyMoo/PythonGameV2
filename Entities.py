@@ -200,7 +200,7 @@ class TestEnemy(Enemy):
         self.maxHealth = self.health = 5
         self.Damage = 1
     #TODO Factor in Combat and not moving if the position is already occupied
-    def move(self, graph, player, entities):
+    def move(self, graph, player, entities, tileMap):
         path = graph.Astar([self.y, self.x], [player.y, player.x])
         playerCoords, nextCoords = tuple([player.x, player.y]), tuple([path[0][1], path[0][0]])
         willMove = True
@@ -211,6 +211,8 @@ class TestEnemy(Enemy):
         if not nextCoords == playerCoords and willMove:
             self.x = path[0][1]
             self.y = path[0][0]
-        elif nextCoords == playerCoords:
+            if type(tileMap[self.y][self.x]) == Tiles.DangerTileAnim:
+                self.health -= tileMap[self.y][self.x].damageValue
+        elif nextCoords == playerCoords and not self.TurnCombat:
             player.Attacked(self)
         self.TurnCombat = False
