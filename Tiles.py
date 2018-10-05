@@ -22,14 +22,14 @@ class Tile:
     def getCost(self):
         return self.cost
 class AnimTile(Tile):
-    def __init__(self, gridPos: tuple, spritesheet: str, collision: bool, animRow: int, NoOfFrames: int, timePeriod: int):
+    def __init__(self, gridPos: tuple, spritesheet: str, collision: bool, animRow: int, NoOfFrames: int, timePeriod: int, cost :int = 0):
         self.NoOfFrames = NoOfFrames
         self.timePeriod = timePeriod
         self.spriteSheet = spritesheet
         self.animRow = animRow
         #Tile needs an initial sprite to set the attribute sprite
         initialSprite = self.spriteSheet.returnTile(0, self.animRow)
-        super().__init__(gridPos, initialSprite, collision)
+        super().__init__(gridPos, initialSprite, collision, cost)
         self.tick = 0
         
     def Render(self, screen, OffsetX, OffsetY):
@@ -45,8 +45,8 @@ class AnimTile(Tile):
         return Sprite
 #Special non floor / wall tiles could go here that would need special parameters i.e. door that needs destination
 class DangerTileAnim(AnimTile):
-    def __init__(self, gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue):
-        super().__init__(gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod)
+    def __init__(self, gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue, cost = 1):
+        super().__init__(gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, cost)
         self.damageValue = damageValue
         
 class TransportTile(Tile):

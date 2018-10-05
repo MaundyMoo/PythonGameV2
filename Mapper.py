@@ -30,7 +30,7 @@ class Map():
                     row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(2,0),True))
                 #RED : lava or generic damageTile
                 elif self.pixels[y][x] == (255,0,0):
-                    row.append(Tiles.DangerTileAnim((x,y), self.animTileSheet,False,1,3,20,1))
+                    row.append(Tiles.DangerTileAnim((x,y), self.animTileSheet,False,1,3,20,1, cost = 100))
                 #GREEN : grass
                 elif self.pixels[y][x] == (0,255,0):
                     row.append(Tiles.Tile((x,y), self.tileSheet.returnTile(0,0),False))
@@ -46,7 +46,8 @@ class Map():
                     row.append(Tiles.TransportTile((x,y), self.tileSheet.returnTile(3,0), False, path))
                 #CYAN : ?
                 elif self.pixels[y][x] == (0,255,255):
-                    pass
+                    path = Main.getPath("res/map2.png")
+                    row.append(Tiles.TransportTile((x,y), self.tileSheet.returnTile(3,0), False, path))
                 #WHITE : ?
                 elif self.pixels[y][x] == (255,255,255):
                     pass
