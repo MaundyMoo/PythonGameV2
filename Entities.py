@@ -149,44 +149,22 @@ class Enemy(Entity):
         super().Update()
         if self.health <= 0:
             self.die()
-    #OBSELETE move method, keeping here just in case idk
-    def move(self, player, entities):
-        dY, dX = 0, 0
-        playerX = player.getX()
-        playerY = player.getY()
-        #check y
-        if playerY > self.y:
-            dY = 1
-        elif playerY < self.y:
-            dY = -1
-        if self.map[self.y + dY][self.x].collision == True:
-            dY = 0
-        else:
+    def move(self, graph, player, entities, tileMap):
+            path = graph.Astar([self.y, self.x], [player.y, player.x])
+            playerCoords, nextCoords = tuple([player.x, player.y]), tuple([path[0][1], path[0][0]])
+            willMove = True
             for each in entities:
-                if (self.y + dY, self.x) == (each.y, each.x):
-                    dY = 0
+                if nextCoords == (each.x, each.y):
+                    willMove = False
                     break
-        #check x
-        if dY == 0 or playerY == self.y:
-            if playerX > self.x:
-                dX = 1
-            elif playerX < self.x:
-                dX = -1
-            if self.map[self.y][self.x + dX].collision == True:
-                dX = 0
-            else:
-                for each in entities:
-                    if (self.y, self.x + dX) == (each.y, each.x):
-                        dX = 0
-                        break   
-        if self.y + dY == playerY and self.x + dX == playerX:
-            dY, dX = 0, 0
-            if not self.TurnCombat: player.Attacked(self)
-        self.y += dY; self.x += dX
-        if type(self.map[self.y][self.x]) == Tiles.DangerTileAnim:
-            self.health -= self.map[self.y][self.x].damageValue
-        #Turn has resolved so the combat flag can be reset
-        self.TurnCombat = False
+            if not nextCoords == playerCoords and willMove:
+                self.x = path[0][1]
+                self.y = path[0][0]
+                if type(tileMap[self.y][self.x]) == Tiles.DangerTileAnim:
+                    self.health -= tileMap[self.y][self.x].damageValue
+            elif nextCoords == playerCoords and not self.TurnCombat:
+                player.Attacked(self)
+            self.TurnCombat = False
     def die(self):
         self.isDead = True
 #might do multiple classes, one for each enemy type
@@ -199,20 +177,3 @@ class TestEnemy(Enemy):
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1
-    #TODO Factor in Combat and not moving if the position is already occupied
-    def move(self, graph, player, entities, tileMap):
-        path = graph.Astar([self.y, self.x], [player.y, player.x])
-        playerCoords, nextCoords = tuple([player.x, player.y]), tuple([path[0][1], path[0][0]])
-        willMove = True
-        for each in entities:
-            if nextCoords == (each.x, each.y):
-                willMove = False
-                break
-        if not nextCoords == playerCoords and willMove:
-            self.x = path[0][1]
-            self.y = path[0][0]
-            if type(tileMap[self.y][self.x]) == Tiles.DangerTileAnim:
-                self.health -= tileMap[self.y][self.x].damageValue
-        elif nextCoords == playerCoords and not self.TurnCombat:
-            player.Attacked(self)
-        self.TurnCombat = False
