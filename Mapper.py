@@ -1,4 +1,4 @@
-import Tiles, Image, os, Main
+import Tiles, Image, os, Main, CellularAutomata
 from PIL import Image as Img
 class Map():
     def __init__(self, path, tileSheetPath, animTileSheetPath):
@@ -15,6 +15,19 @@ class Map():
             (i + 1) * width] for i in range(height)]
         self.pixels = pixels
         self.map.close()
+    def getTileMap(self):
+        TileMap = []
+        map = CellularAutomata.generateMap(chance = 0.6, steps = 2)
+        for rows in range(0, len(map)):
+            row = []
+            for columns in range(0, len(map[0])):
+                if map[rows][columns]:
+                    row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(0,0),False))
+                else:
+                    row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(2,0),True))
+            TileMap.append(row)
+        return TileMap
+    '''
     def getTileMap(self):
         TileMap = []
         #columns then rows for 2D lists
@@ -55,6 +68,7 @@ class Map():
                     print("Colour, ", self.pixels[x][y], "has no defining Tile")
             TileMap.append(row)
         return TileMap
+    '''
     def getWidth(self):
         return len(self.pixels[0])
     def getHeight(self):

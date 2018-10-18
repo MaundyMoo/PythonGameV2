@@ -47,8 +47,8 @@ def run(width, height, fps, scene):
         #print ("fps:", clock.get_fps())
 
 #Screen Size
-WIDTH = 704 #704
-HEIGHT = 448 #448
+WIDTH = 1280 #704
+HEIGHT = 720 #448
 
 LEVELCOUNT = 0
 if __name__ == "__main__":
