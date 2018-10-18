@@ -15,7 +15,7 @@ def generateRandomMap(width: int, height: int, chance: float) -> list:
         map.append(row)
     return map
     
-def stepSimulation(map: list, deathLimit = 5, birthLimit = 3):
+def stepSimulation(map: list, deathLimit: int, birthLimit: int):
     newMap = map
     for y in range(0, len(map)):
         for x in range(0, len(map[0])):
@@ -45,10 +45,10 @@ def countLivingNeighbours(map: list, x: int, y: int):
             elif map[neighbourY][neighbourX]:
                 count += 1
     return count
-def generateMap(width = 50, height = 50, chance = 0.45, steps = 1):
+def generateMap(width = 50, height = 50, chance = 0.5, steps = 1, birthLimit = 4, deathLimit = 4):
     map = generateRandomMap(width, height, chance)
     for i in range(0, steps+1):
-        map = stepSimulation(map)
+        map = stepSimulation(map, birthLimit, deathLimit)
     return map
 '''
 map = generateRandomMap(50,50,0.5)

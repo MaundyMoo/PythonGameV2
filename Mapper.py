@@ -17,11 +17,11 @@ class Map():
         self.map.close()
     def getTileMap(self):
         TileMap = []
-        map = CellularAutomata.generateMap(chance = 0.6, steps = 2)
+        map = CellularAutomata.generateMap(chance = 0.6, steps = 5, birthLimit = 3, deathLimit = 4)
         for rows in range(0, len(map)):
             row = []
             for columns in range(0, len(map[0])):
-                if map[rows][columns]:
+                if not map[rows][columns]:
                     row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(0,0),False))
                 else:
                     row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(2,0),True))

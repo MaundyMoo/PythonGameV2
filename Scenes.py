@@ -171,22 +171,20 @@ class GameScene(SceneBase):
         playerLocation = None
         for y in range(0, len(self.tileMap)):
             for x in range(0, len(self.tileMap[0])):
-                if not self.tileMap[y][x].isCollidable:
+                if not self.tileMap[y][x].isCollidable():
                     playerLocation = (x,y)
-                    print(playerLocation)
                 if not playerLocation == None: break
             if not playerLocation == None: break
-        print(playerLocation)
         self.player = Entities.Player(playerLocation[0],playerLocation[1],"res/playerSheet.png",self.tileMap,3,10)
+        self.Entities = [self.player]
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
         '''
         self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
                              Entities.TestEnemy(5,7,self.tileMap),
                              Entities.TestEnemy(4,6,self.tileMap),
                              Entities.TestEnemy(6,6,self.tileMap)]
-        '''
-        self.Entities = [self.player]
         self.Entities.extend(self.DummyEnemies)
+        '''
         self.animTiles = []
         self.renderedBack = False
         self.CameraX = 0
