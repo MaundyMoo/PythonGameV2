@@ -54,7 +54,7 @@ def getCaverns(map: list):
         row = []
         for x in range(0, len(map[0])):
             if map[y][x]:
-                row.append('#')
+                row.append(',')
             else:
                 row.append('.')
         cavernMap.append(row)
@@ -70,6 +70,7 @@ def floodfill(location: tuple, map: list, cavernNo: int):
     y, x = location
     if not map[y][x] == '.':
         print("Something went wrong") 
+    #Cast to a string to make debug easier as everything will print uniformly then
     map[y][x] = str(cavernNo)
     if not y == len(map)-1:
         if map[y+1][x] == '.': floodfill((y+1, x), map, str(cavernNo))

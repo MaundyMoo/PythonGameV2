@@ -15,9 +15,15 @@ class Map():
             (i + 1) * width] for i in range(height)]
         self.pixels = pixels
         self.map.close()
+
+        #Cellular Automata test data
+        self.cellheight = 80
+        self.cellwidth = 40
+
     def getTileMap(self):
         TileMap = []
-        map = CellularAutomata.generateMap(width = 40, height = 80, chance = 0.6, steps = 6, birthLimit = 3, deathLimit = 4)
+        #chance = 0.6
+        map = CellularAutomata.generateMap(self.cellwidth, self.cellheight, chance = 0.65, steps = 6, birthLimit = 3, deathLimit = 4)
         for rows in range(0, len(map)):
             row = []
             for columns in range(0, len(map[0])):
@@ -70,9 +76,11 @@ class Map():
         return TileMap
     '''
     def getWidth(self):
-        return len(self.pixels[0])
+        return self.cellwidth
+        #return len(self.pixels[0])
     def getHeight(self):
-        return len(self.pixels)
+        return self.cellheight
+        #return len(self.pixels)
     def returnMap(self):
         return self.pixels
 

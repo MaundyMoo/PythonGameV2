@@ -74,6 +74,7 @@ class Player(Entity):
 
     def Move(self, dX, dY, OffsetX, OffsetY, entities):
         #If the tile being moved onto has an event, trigger it
+        print(OffsetY, OffsetY/Tiles.TILESIZE,'::',self.y, len(self.map))
         try:
             if self.x + dX not in range(0, len(self.map[0])): dX = 0
             if self.y + dY not in range(0, len(self.map)): dY = 0
@@ -96,14 +97,14 @@ class Player(Entity):
                     else:
                         print("Oopsies I made an error")
             #This stops the player moving off the screen to the left / top
-            if self.y + dY < 0: dY = 0; return False
+            if self.y + dY < 0: dY = 0;return False
             if self.x + dX < 0: dX = 0; return False
             #Stops mpving off of the map 
-            if self.x + dX > len(self.map): dX = 0; return False
-            if self.y + dY > len(self.map[0]): dY = 0; return False
+            if self.x + dX >= len(self.map[0]): dX = 0; return False
+            if self.y + dY >= len(self.map): dY = 0;return False
             #This allows the player to move past the point where the camera couldn't on the far right / bottom and return to centre of the screen without the camera moving
             if (dX is not 0) and (self.x + dX >= (self.xCentre + (abs(len(self.map[0]) - (Main.WIDTH / Tiles.TILESIZE))))) and (abs(OffsetX) == abs(len(self.map[0]) * Tiles.TILESIZE - Main.WIDTH)): self.x+=dX; return False
-            if (dY is not 0) and (self.y + dY >= (self.yCentre + (abs(len(self.map[1]) - (Main.HEIGHT / Tiles.TILESIZE))))) and (abs(OffsetY) == abs(len(self.map[1]) * Tiles.TILESIZE - Main.HEIGHT)): self.y+=dY; return False
+            if (dY is not 0) and (self.y + dY >= (self.yCentre + (abs(len(self.map) - (Main.HEIGHT / Tiles.TILESIZE))))) and (abs(OffsetY) == abs(len(self.map) * Tiles.TILESIZE - Main.HEIGHT)): self.y+=dY; return False
             #This allows the player to move at the top and left without needing the camera to follow (as it would go out of bounds)
             if dX is not 0 and self.x + dX <= self.xCentre and OffsetX == 0: self.x += dX;return False
             if dY is not 0 and self.y + dY <= self.yCentre and OffsetY == 0: self.y += dY;return False

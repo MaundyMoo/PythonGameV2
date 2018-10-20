@@ -187,8 +187,8 @@ class GameScene(SceneBase):
         '''
         self.animTiles = []
         self.renderedBack = False
-        self.CameraX = 0
-        self.CameraY = 0
+        self.CameraX = 0#playerLocation[1] * Tiles.TILESIZE
+        self.CameraY = 0#playerLocation[0] * Tiles.TILESIZE
         
     def ProcessInput(self, events, pressed_keys):
         for event in events:
