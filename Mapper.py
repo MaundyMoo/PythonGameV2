@@ -17,7 +17,7 @@ class Map():
         self.map.close()
     def getTileMap(self):
         TileMap = []
-        map = CellularAutomata.generateMap(chance = 0.6, steps = 5, birthLimit = 3, deathLimit = 4)
+        map = CellularAutomata.generateMap(width = 40, height = 80, chance = 0.6, steps = 6, birthLimit = 3, deathLimit = 4)
         for rows in range(0, len(map)):
             row = []
             for columns in range(0, len(map[0])):
