@@ -23,7 +23,7 @@ class Map():
     def getTileMap(self):
         TileMap = []
         #chance = 0.6
-        map = CellularAutomata.generateMap(self.cellwidth, self.cellheight, chance = 0.65, steps = 6, birthLimit = 3, deathLimit = 4)
+        map = CellularAutomata.generateMap(self.cellwidth, self.cellheight, chance = 0.6, steps = 6, birthLimit = 3, deathLimit = 4)
         for rows in range(0, len(map)):
             row = []
             for columns in range(0, len(map[0])):

@@ -74,7 +74,6 @@ class Player(Entity):
 
     def Move(self, dX, dY, OffsetX, OffsetY, entities):
         #If the tile being moved onto has an event, trigger it
-        print(OffsetY, OffsetY/Tiles.TILESIZE,'::',self.y, len(self.map))
         try:
             if self.x + dX not in range(0, len(self.map[0])): dX = 0
             if self.y + dY not in range(0, len(self.map)): dY = 0
