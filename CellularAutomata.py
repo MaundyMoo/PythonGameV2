@@ -58,14 +58,19 @@ def getCaverns(map: list):
             else:
                 row.append('.')
         cavernMap.append(row)
+    #Used to count the number of caverns, may be useful idk.
     counter = 0
+    #Used to store the first tile of each cavern, will be used to connect them
+    cavernLocation = []
     for y in range(0, len(cavernMap)):
         for x in range(0, len(cavernMap[0])):
             if cavernMap[y][x] == '.':
                 cavernMap = floodfill((y,x), cavernMap, counter)
+                cavernLocation.append((y,x))
                 counter += 1
     for each in cavernMap:
         print(each)
+#TODO Have something done with the cavern information
 def floodfill(location: tuple, map: list, cavernNo: int):
     y, x = location
     if not map[y][x] == '.':
@@ -81,6 +86,9 @@ def floodfill(location: tuple, map: list, cavernNo: int):
     if not x == 0:
         if map[y][x-1] == '.': floodfill((y, x-1), map, str(cavernNo))
     return map
+#Join caverns maybe? could prolly just do in get caverns function, do I need more abstraction from myself?
+def joinCaverns():
+    pass
 #Driver function for running the necessary procedures to generate a map
 def generateMap(width = 50, height = 50, chance = 0.5, steps = 1, birthLimit = 4, deathLimit = 4):
     map = generateRandomMap(width, height, chance)
