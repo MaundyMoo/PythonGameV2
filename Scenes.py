@@ -226,17 +226,23 @@ class GameScene(SceneBase):
     def Update(self):
     #Top left is (0,0) so offset is done in negative
         #Prevents the camera going off of the RightMost boundary 
-        if self.CameraX < -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH):
+        if self.CameraX <= -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH):
             self.CameraX = -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH)
         #Stops Left most boundary
-        elif self.CameraX > 0:
+        elif self.CameraX >= 0:
             self.CameraX = 0
+        #Centres on player horizontally
+        elif not self.CameraX == -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2):
+            self.CameraX = -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2)
         #Stops bottom most boundary
-        if self.CameraY < -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT):
+        if self.CameraY <= -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT):
             self.CameraY = -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT)
         #Stops upper most boundary
-        elif self.CameraY > 0:
+        elif self.CameraY >= 0:
             self.CameraY = 0
+        #Centres on player vertically
+        elif not self.CameraY == -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2):
+            self.CameraY = -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2)
         #Updates every entity
         for each in self.Entities:
             each.Update()

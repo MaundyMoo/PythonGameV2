@@ -48,7 +48,7 @@ def run(width, height, fps, scene):
 
 #Screen Size
 WIDTH = 1280 #704
-HEIGHT = 736 #448
+HEIGHT = 768 #448
 
 LEVELCOUNT = 0
 if __name__ == "__main__":
