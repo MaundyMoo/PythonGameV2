@@ -48,13 +48,19 @@ def countLivingNeighbours(map: list, x: int, y: int):
     return count
 #Uses floodfill algorithm to determine the caverns within the map
 def getCaverns(map: list):
+    '''
+    In this sequence of steps to floodfill the caverns and try to connect them, I loop through the map WAAAAAY too many times, will need a fair amount 
+    of refactoring for this to be anywhere near 
+    a) optimised for performance
+    b) will need editing to have more functions, because currently the floodfill isn't used for counting the size of the caverns which could be useful
+    '''
     cavernMap = []
     #Unnescesary looping through list, will remove after complete, just helps for visualisation 
     for y in range(0, len(map)):
         row = []
         for x in range(0, len(map[0])):
             if map[y][x]:
-                row.append(',')
+                row.append(',') #wall is true
             else:
                 row.append('.')
         cavernMap.append(row)
@@ -68,31 +74,52 @@ def getCaverns(map: list):
                 cavernMap = floodfill((y,x), cavernMap, counter)
                 cavernLocation.append((y,x))
                 counter += 1
-    for each in cavernMap:
-        print(each)
-#TODO Have something done with the cavern information
-def floodfill(location: tuple, map: list, cavernNo: int):
+    if len(cavernLocation) > 1:
+        #Loop through cavern locations and make sure two adjaceantly numbered caverns are connected
+        for i in range(0, len(cavernLocation)-1):
+            map = joinCaverns(cavernLocation[i], cavernLocation[i+1], cavernMap)
+    for y in range(0, len(map)):
+        for x in range(0, len(map[0])):
+            if cavernMap[y][x] == ',':
+                cavernMap[y][x] = True
+            else:
+                cavernMap[y][x] = False
+    return cavernMap
+def floodfill(location: tuple, map: list, cavernNo: int, cavernSize = 0):
     y, x = location
-    if not map[y][x] == '.':
-        print("Something went wrong") 
     #Cast to a string to make debug easier as everything will print uniformly then
     map[y][x] = str(cavernNo)
     if not y == len(map)-1:
-        if map[y+1][x] == '.': floodfill((y+1, x), map, str(cavernNo))
+        if map[y+1][x] == '.': cavernSize+=1;floodfill((y+1, x), map, str(cavernNo),cavernSize)
     if not y == 0:
-        if map[y-1][x] == '.': floodfill((y-1, x), map, str(cavernNo))
+        if map[y-1][x] == '.': cavernSize+=1;floodfill((y-1, x), map, str(cavernNo),cavernSize)
     if not x == len(map[0])-1:
-        if map[y][x+1] == '.': floodfill((y, x+1), map, str(cavernNo))
+        if map[y][x+1] == '.': cavernSize+=1;floodfill((y, x+1), map, str(cavernNo),cavernSize)
     if not x == 0:
-        if map[y][x-1] == '.': floodfill((y, x-1), map, str(cavernNo))
+        if map[y][x-1] == '.': cavernSize+=1;floodfill((y, x-1), map, str(cavernNo),cavernSize)
     return map
 #Join caverns maybe? could prolly just do in get caverns function, do I need more abstraction from myself?
-def joinCaverns():
-    pass
+def joinCaverns(cavern1: tuple, cavern2: tuple, map: list):
+    y1, x1 = cavern1
+    y2, x2 = cavern2
+    #Connect on x axis
+    if x1 < x2:
+        for i in range(x1, x2+1):
+            map[y1][i] = 'a'
+    elif x1 > x2:
+        for i in range(x2, x1+1):
+            map[y1][i] = 'b'
+    if y1 < y2:
+        for i in range(y1, y2+1):
+            map[i][x2] = 'c'
+    elif x1 > x2:
+        for i in range(y2, y1+1):
+            map[i][x2] = 'd'
+    return map
 #Driver function for running the necessary procedures to generate a map
 def generateMap(width = 50, height = 50, chance = 0.5, steps = 1, birthLimit = 4, deathLimit = 4):
     map = generateRandomMap(width, height, chance)
     for i in range(0, steps+1):
         map = stepSimulation(map, birthLimit, deathLimit)
-    getCaverns(map)
+    map = getCaverns(map)
     return map
