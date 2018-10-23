@@ -1,7 +1,8 @@
 '''
     Cellular Automata Test
 '''
-from random import random
+from random import random, choice
+
 #Creates/Seeds a random 2D array with true or false values for alive or dead cells
 def generateRandomMap(width: int, height: int, chance: float) -> list:
     map = []
@@ -64,27 +65,33 @@ def getCaverns(map: list):
             else:
                 row.append('.')
         cavernMap.append(row)
-    #Used to count the number of caverns, may be useful idk.
+    #Used to count the number of caverns
     counter = 0
-    #Used to store the first tile of each cavern, will be used to connect them
-    cavernLocation = []
     for y in range(0, len(cavernMap)):
         for x in range(0, len(cavernMap[0])):
             if cavernMap[y][x] == '.':
                 cavernMap = floodfill((y,x), cavernMap, counter)
-                cavernLocation.append((y,x))
                 counter += 1
-    if len(cavernLocation) > 1:
+    #Gets the position of every open tile in a cavern
+    caverns = []
+    for i in range(0, counter+1):
+        temp = []
+        for y in range(0, len(cavernMap)):
+            for x in range(0, len(cavernMap[0])):
+                if cavernMap[y][x] == str(i):
+                    temp.append((y,x))
+        caverns.append(temp)
+    if len(caverns) > 1:
         #Loop through cavern locations and make sure two adjaceantly numbered caverns are connected
-        for i in range(0, len(cavernLocation)-1):
-            map = joinCaverns(cavernLocation[i], cavernLocation[i+1], cavernMap)
+        for i in range(0, len(caverns)-2):
+            map = joinCaverns(choice(caverns[i]), choice(caverns[i+1]), cavernMap)
     for y in range(0, len(map)):
         for x in range(0, len(map[0])):
             if cavernMap[y][x] == ',':
                 cavernMap[y][x] = True
             else:
                 cavernMap[y][x] = False
-    return cavernMap
+    return cavernMap, caverns
 def floodfill(location: tuple, map: list, cavernNo: int, cavernSize = 0):
     y, x = location
     #Cast to a string to make debug easier as everything will print uniformly then
@@ -121,5 +128,5 @@ def generateMap(width = 50, height = 50, chance = 0.5, steps = 1, birthLimit = 4
     map = generateRandomMap(width, height, chance)
     for i in range(0, steps+1):
         map = stepSimulation(map, birthLimit, deathLimit)
-    map = getCaverns(map)
-    return map
+    map, caverns = getCaverns(map)
+    return map, caverns

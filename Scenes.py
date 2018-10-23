@@ -1,5 +1,5 @@
 #Comment to test pull
-import pygame, image, Entities, Mapper, Tiles, Events, Main, Pathing
+import pygame, image, Entities, Mapper, Tiles, Events, Main, Pathing, random
 class SceneBase:
     def __init__(self, width, height):
         self.next = self
@@ -165,16 +165,11 @@ class GameScene(SceneBase):
         path1 = Main.getPath("res/TileSheet.png")
         path2 = Main.getPath("res/AnimTileSheet.png")
         self.map = Mapper.Map(mapFile, path1, path2)
-        self.tileMap = self.map.getTileMap()
+        self.tileMap, caverns = self.map.getTileMap()
         
         self.graph = Pathing.Graph(self.tileMap)
-        playerLocation = None
-        for y in range(0, len(self.tileMap)):
-            for x in range(0, len(self.tileMap[0])):
-                if not self.tileMap[y][x].isCollidable():
-                    playerLocation = (x,y)
-                if not playerLocation == None: break
-            if not playerLocation == None: break
+        playerLocationY, playerLocationX = random.choice(caverns[0])
+        playerLocation = (playerLocationX, playerLocationY)
         self.player = Entities.Player(playerLocation[0],playerLocation[1],"res/playerSheet.png",self.tileMap,3,10)
         self.Entities = [self.player]
         #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
@@ -185,11 +180,27 @@ class GameScene(SceneBase):
                              Entities.TestEnemy(6,6,self.tileMap)]
         self.Entities.extend(self.DummyEnemies)
         '''
+
+        enemyLocations = self.calculateEnemyPlacements(caverns, playerLocation)
+        for each in enemyLocations:
+            self.Entities.append(Entities.TestEnemy(each[0],each[1],self.tileMap))
+
         self.animTiles = []
         self.renderedBack = False
-        self.CameraX = 0#playerLocation[1] * Tiles.TILESIZE
-        self.CameraY = 0#playerLocation[0] * Tiles.TILESIZE
-        
+        self.CameraX = -(playerLocation[0] * Tiles.TILESIZE - Main.WIDTH/2)
+        self.CameraY = -(playerLocation[1] * Tiles.TILESIZE - Main.HEIGHT/2)
+    
+    def calculateEnemyPlacements(self, caverns, playerLocation):
+        enemyLocations = []
+        player = (playerLocation[1], playerLocation[0])
+        caverns[0].remove(player)
+        for i in range(0, len(caverns)):
+            for j in range(0, len(caverns[i]) // 100):
+                location = random.choice(caverns[i])
+                location = (location[1], location[0])
+                enemyLocations.append(location)
+        return enemyLocations
+
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN:

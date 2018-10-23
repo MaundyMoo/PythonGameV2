@@ -2,10 +2,11 @@ import Tiles, Image, os, Main, CellularAutomata
 from PIL import Image as Img
 class Map():
     def __init__(self, path, tileSheetPath, animTileSheetPath):
-        mapPath = Main.getPath(path)
-        self.map = Img.open(mapPath)
         self.tileSheet = Image.SpriteSheet(tileSheetPath, 32)
         self.animTileSheet = Image.SpriteSheet(animTileSheetPath, 32)
+        '''
+        mapPath = Main.getPath(path)
+        self.map = Img.open(mapPath)
         #Gets a list of all the pixel data in the img in a 1 dimensional list
         self.map = self.map.convert("RGB")
         pixels = list(self.map.getdata())
@@ -15,7 +16,7 @@ class Map():
             (i + 1) * width] for i in range(height)]
         self.pixels = pixels
         self.map.close()
-
+        '''
         #Cellular Automata test data
         self.cellheight = 80
         self.cellwidth = 40
@@ -23,7 +24,7 @@ class Map():
     def getTileMap(self):
         TileMap = []
         #chance = 0.6
-        map = CellularAutomata.generateMap(self.cellwidth, self.cellheight, chance = 0.6, steps = 6, birthLimit = 3, deathLimit = 4)
+        map, caverns = CellularAutomata.generateMap(self.cellwidth, self.cellheight, chance = 0.6, steps = 6, birthLimit = 3, deathLimit = 4)
         for rows in range(0, len(map)):
             row = []
             for columns in range(0, len(map[0])):
@@ -32,7 +33,7 @@ class Map():
                 else:
                     row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(2,0),True))
             TileMap.append(row)
-        return TileMap
+        return TileMap, caverns
     '''
     def getTileMap(self):
         TileMap = []

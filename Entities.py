@@ -142,6 +142,7 @@ class Enemy(Entity):
         super().__init__(x, y, spritesheet, map, frames, interval)
         self.maxHealth = self.health = self.Damage= 0
         self.isDead = False
+        self.agrorange = 8
         #Stops the combat and Attacked methods being called both in one turn
         self.TurnCombat = False
         
@@ -149,7 +150,14 @@ class Enemy(Entity):
         super().Update()
         if self.health <= 0:
             self.die()
+    def inRange(self, player):
+        distanceToPlayer = ((self.x - player.x)**2 + (self.y - player.y)**2)**0.5
+        if distanceToPlayer < self.agrorange:
+            return True
+        else:
+            return False
     def move(self, graph, player, entities, tileMap):
+        if self.inRange(player):
             path = graph.Astar([self.y, self.x], [player.y, player.x])
             playerCoords, nextCoords = tuple([player.x, player.y]), tuple([path[0][1], path[0][0]])
             willMove = True
@@ -165,6 +173,8 @@ class Enemy(Entity):
             elif nextCoords == playerCoords and not self.TurnCombat:
                 player.Attacked(self)
             self.TurnCombat = False
+        else:
+            pass
     def die(self):
         self.isDead = True
 #might do multiple classes, one for each enemy type
