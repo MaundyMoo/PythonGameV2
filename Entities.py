@@ -138,11 +138,11 @@ class Player(Entity):
         return self.y
         
 class Enemy(Entity):
-    def __init__(self, x, y, spritesheet, map, frames, interval, animRow):
+    def __init__(self, x, y, spritesheet, map, frames, interval, animRow, agrorange):
         super().__init__(x, y, spritesheet, map, frames, interval)
         self.maxHealth = self.health = self.Damage= 0
         self.isDead = False
-        self.agrorange = 8
+        self.agrorange = agrorange
         #Stops the combat and Attacked methods being called both in one turn
         self.TurnCombat = False
         
@@ -179,11 +179,11 @@ class Enemy(Entity):
         self.isDead = True
 #might do multiple classes, one for each enemy type
 class TestEnemy(Enemy):
-    def __init__(self, x, y, map):
+    def __init__(self, x, y, map, agrorange = 8):
         #Entity Constants
         path = Main.getPath("res/EnemySheet.png")
         spritesheet = path; frames = 1; interval = 20; animRow = 0
-        super().__init__(x, y, spritesheet, map, frames, interval, animRow)
+        super().__init__(x, y, spritesheet, map, frames, interval, animRow, agrorange)
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1

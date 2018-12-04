@@ -165,25 +165,32 @@ class GameScene(SceneBase):
         path1 = Main.getPath("res/TileSheet.png")
         path2 = Main.getPath("res/AnimTileSheet.png")
         self.map = Mapper.Map(mapFile, path1, path2)
-        self.tileMap, caverns = self.map.getTileMap()
-        
-        self.graph = Pathing.Graph(self.tileMap)
-        playerLocationY, playerLocationX = random.choice(caverns[0])
-        playerLocation = (playerLocationX, playerLocationY)
-        self.player = Entities.Player(playerLocation[0],playerLocation[1],"res/playerSheet.png",self.tileMap,3,10)
-        self.Entities = [self.player]
-        #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
-        '''
-        self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap),
-                             Entities.TestEnemy(5,7,self.tileMap),
-                             Entities.TestEnemy(4,6,self.tileMap),
-                             Entities.TestEnemy(6,6,self.tileMap)]
-        self.Entities.extend(self.DummyEnemies)
-        '''
 
-        enemyLocations = self.calculateEnemyPlacements(caverns, playerLocation)
-        for each in enemyLocations:
-            self.Entities.append(Entities.TestEnemy(each[0],each[1],self.tileMap))
+        self.CELLMAP = True
+
+        if self.CELLMAP:
+            self.tileMap, caverns = self.map.getCavernTileMap()
+            playerLocationY, playerLocationX = random.choice(caverns[0])
+            playerLocation = (playerLocationX, playerLocationY)
+            self.player = Entities.Player(playerLocation[0],playerLocation[1],"res/playerSheet.png",self.tileMap,3,10)
+            enemyLocations = self.calculateEnemyPlacements(caverns, playerLocation)
+            self.Entities = [self.player]
+            for each in enemyLocations:
+                self.Entities.append(Entities.TestEnemy(each[0],each[1],self.tileMap))
+        else: 
+            self.tileMap = self.map.getTileMap()
+            playerLocationY, playerLocationX = (2,2)
+            playerLocation = (playerLocationY, playerLocationX)
+            self.player = Entities.Player(playerLocationY,playerLocationX, "res/playerSheet.png", self.tileMap, 3, 10)
+            self.Entities = [self.player]
+            self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap, 100),
+                                Entities.TestEnemy(5,7,self.tileMap, 100),
+                                Entities.TestEnemy(4,6,self.tileMap, 100),
+                                Entities.TestEnemy(6,6,self.tileMap, 100)]
+            self.Entities.extend(self.DummyEnemies)
+        self.graph = Pathing.Graph(self.tileMap)
+        
+        #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
 
         self.animTiles = []
         self.renderedBack = False
@@ -237,23 +244,42 @@ class GameScene(SceneBase):
     def Update(self):
     #Top left is (0,0) so offset is done in negative
         #Prevents the camera going off of the RightMost boundary 
-        if self.CameraX <= -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH):
-            self.CameraX = -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH)
-        #Stops Left most boundary
-        elif self.CameraX >= 0:
-            self.CameraX = 0
-        #Centres on player horizontally
-        elif not self.CameraX == -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2):
-            self.CameraX = -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2)
-        #Stops bottom most boundary
-        if self.CameraY <= -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT):
-            self.CameraY = -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT)
-        #Stops upper most boundary
-        elif self.CameraY >= 0:
-            self.CameraY = 0
-        #Centres on player vertically
-        elif not self.CameraY == -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2):
-            self.CameraY = -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2)
+        if self.CELLMAP:
+            if self.CameraX <= -(self.map.getCellWidth() * Tiles.TILESIZE - Main.WIDTH):
+                self.CameraX = -(self.map.getCellWidth() * Tiles.TILESIZE - Main.WIDTH)
+            #Stops Left most boundary
+            elif self.CameraX >= 0:
+                self.CameraX = 0
+            #Centres on player horizontally
+            elif not self.CameraX == -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2):
+                self.CameraX = -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2)
+            #Stops bottom most boundary
+            if self.CameraY <= -(self.map.getCellHeight() * Tiles.TILESIZE - Main.HEIGHT):
+                self.CameraY = -(self.map.getCellHeight() * Tiles.TILESIZE - Main.HEIGHT)
+            #Stops upper most boundary
+            elif self.CameraY >= 0:
+                self.CameraY = 0
+            #Centres on player vertically
+            elif not self.CameraY == -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2):
+                self.CameraY = -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2)
+        else:
+            if self.CameraX <= -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH):
+                self.CameraX = -(self.map.getWidth() * Tiles.TILESIZE - Main.WIDTH)
+            #Stops Left most boundary
+            elif self.CameraX >= 0:
+                self.CameraX = 0
+            #Centres on player horizontally
+            elif not self.CameraX == -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2):
+                self.CameraX = -(self.player.getX() * Tiles.TILESIZE - Main.WIDTH/2)
+            #Stops bottom most boundary
+            if self.CameraY <= -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT):
+                self.CameraY = -(self.map.getHeight() * Tiles.TILESIZE - Main.HEIGHT)
+            #Stops upper most boundary
+            elif self.CameraY >= 0:
+                self.CameraY = 0
+            #Centres on player vertically
+            elif not self.CameraY == -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2):
+                self.CameraY = -(self.player.getY() * Tiles.TILESIZE - Main.HEIGHT/2)
         #Updates every entity
         for each in self.Entities:
             each.Update()

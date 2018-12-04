@@ -4,24 +4,15 @@ class Map():
     def __init__(self, path, tileSheetPath, animTileSheetPath):
         self.tileSheet = Image.SpriteSheet(tileSheetPath, 32)
         self.animTileSheet = Image.SpriteSheet(animTileSheetPath, 32)
-        '''
-        mapPath = Main.getPath(path)
-        self.map = Img.open(mapPath)
-        #Gets a list of all the pixel data in the img in a 1 dimensional list
-        self.map = self.map.convert("RGB")
-        pixels = list(self.map.getdata())
-        #Sets the size so that the pixel list can be turned into a 2 dimensional array like a grid
-        width, height = self.map.size
-        pixels = [pixels[i * width:
-            (i + 1) * width] for i in range(height)]
-        self.pixels = pixels
-        self.map.close()
-        '''
+        
+        self.path = path
+        
         #Cellular Automata test data
         self.cellheight = 80
         self.cellwidth = 40
-
-    def getTileMap(self):
+        
+    
+    def getCavernTileMap(self):
         TileMap = []
         #chance = 0.6
         map, caverns = CellularAutomata.generateMap(self.cellwidth, self.cellheight, chance = 0.6, steps = 6, birthLimit = 3, deathLimit = 4)
@@ -34,8 +25,21 @@ class Map():
                     row.append(Tiles.AnimTile((columns,rows), self.animTileSheet,True,0,3,10))
             TileMap.append(row)
         return TileMap, caverns
-    '''
+    
     def getTileMap(self):
+
+        mapPath = Main.getPath(self.path)
+        self.map = Img.open(mapPath)
+        #Gets a list of all the pixel data in the img in a 1 dimensional list
+        self.map = self.map.convert("RGB")
+        pixels = list(self.map.getdata())
+        #Sets the size so that the pixel list can be turned into a 2 dimensional array like a grid
+        width, height = self.map.size
+        pixels = [pixels[i * width:
+            (i + 1) * width] for i in range(height)]
+        self.pixels = pixels
+        self.map.close()
+
         TileMap = []
         #columns then rows for 2D lists
         for y in range(0, len(self.pixels)):
@@ -75,13 +79,15 @@ class Map():
                     print("Colour, ", self.pixels[x][y], "has no defining Tile")
             TileMap.append(row)
         return TileMap
-    '''
-    def getWidth(self):
+    
+    def getCellWidth(self):
         return self.cellwidth
-        #return len(self.pixels[0])
-    def getHeight(self):
+    def getWidth(self):
+        return len(self.pixels[0])
+    def getCellHeight(self):
         return self.cellheight
-        #return len(self.pixels)
+    def getHeight(self):
+        return len(self.pixels)
     def returnMap(self):
         return self.pixels
 
