@@ -31,7 +31,7 @@ class Map():
                 if not map[rows][columns]:
                     row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(0,0),False))
                 else:
-                    row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(2,0),True))
+                    row.append(Tiles.AnimTile((columns,rows), self.animTileSheet,True,0,3,10))
             TileMap.append(row)
         return TileMap, caverns
     '''
