@@ -54,7 +54,7 @@ class TitleScene(SceneBase):
                     self.option -= 1
                 if self.option < 0: self.option = 0
                 if self.option > 2: self.option = 2
-    def Update(self):
+    def Update(self): 
         if self.option == 0:
             self.toRender[1] = self.font.render(self.msg, True, (0, 255, 255))
             self.toRender[2] = self.font.render("Settings", True, (50, 50, 50))
