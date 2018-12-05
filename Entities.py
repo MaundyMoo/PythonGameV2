@@ -8,6 +8,7 @@ class Entity:
         self.spriteSheet = Image.SpriteSheet(spritesheet, 32)
         spr = self.spriteSheet.returnTile(0, 0)
         self.sprite = self.ImgToSprite(spr)
+        #Idk what this is doing here tbh
         self.damageSprite = Image.spriteFlash(spr, colour)
         self.sprite = pygame.transform.scale(self.sprite, (Tiles.TILESIZE, Tiles.TILESIZE))
         
