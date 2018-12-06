@@ -11,7 +11,7 @@ class Logger:
         self.position = pos
         self.width, self.height = width, height
     #How do I actually want to log events, parse the string in or parse the action and let the method handle creating a string
-    def logEvent(self, text: String):
+    def logEvent(self, text: str):
         pass
     def Update(self, playerHealth: int, playerMaxHealth: int):
         '''

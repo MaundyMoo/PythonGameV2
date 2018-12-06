@@ -1,4 +1,4 @@
-import pygame, image, Entities, Mapper, Tiles, Events, Main, Pathing, random
+import pygame, image, Entities, Mapper, Tiles, Events, Main, Pathing, random, Logger
 class SceneBase:
     def __init__(self, width, height):
         self.next = self
@@ -191,6 +191,7 @@ class GameScene(SceneBase):
             self.Entities.extend(self.DummyEnemies)
         self.graph = Pathing.Graph(self.tileMap)
 
+        self.logger = Logger.Logger(pos = Main.WIDTH, width = Main.LOGWIDTH, height = Main.SCREEN_HEIGHT)
 
         self.animTiles = []
         self.renderedBack = False
@@ -303,6 +304,7 @@ class GameScene(SceneBase):
         self.tileMap[self.player.y][self.player.x].Render(screen, self.CameraX, self.CameraY)
         #TODO Render log object here
         self.player.Render(screen, self.CameraX, self.CameraY)
+        self.logger.Render(screen)
     
     #Used to redraw the tiles in the background after the player character moves
     def backgroundRender(self, screen):
