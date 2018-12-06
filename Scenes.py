@@ -182,14 +182,15 @@ class GameScene(SceneBase):
             playerLocation = (playerLocationY, playerLocationX)
             self.player = Entities.Player(playerLocationY,playerLocationX, "res/playerSheet.png", self.tileMap, 3, 10)
             self.Entities = [self.player]
+            #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
+            # ^ IGNORE ALREADY DONE WITH RANDOM GEN
             self.DummyEnemies = [Entities.TestEnemy(5,5,self.tileMap, 100),
                                 Entities.TestEnemy(5,7,self.tileMap, 100),
                                 Entities.TestEnemy(4,6,self.tileMap, 100),
                                 Entities.TestEnemy(6,6,self.tileMap, 100)]
             self.Entities.extend(self.DummyEnemies)
         self.graph = Pathing.Graph(self.tileMap)
-        
-        #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
+
 
         self.animTiles = []
         self.renderedBack = False
@@ -300,6 +301,7 @@ class GameScene(SceneBase):
             self.tileMap[each.y][each.x].Render(screen, self.CameraX, self.CameraY)
             each.Render(screen, self.CameraX, self.CameraY)
         self.tileMap[self.player.y][self.player.x].Render(screen, self.CameraX, self.CameraY)
+        #TODO Render log object here
         self.player.Render(screen, self.CameraX, self.CameraY)
     
     #Used to redraw the tiles in the background after the player character moves
