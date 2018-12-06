@@ -47,8 +47,11 @@ def run(width, height, fps, scene):
         #print ("fps:", clock.get_fps())
 
 #Screen Size
-WIDTH = 1280 #704
-HEIGHT = 768 #448
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 768
+LOGWIDTH = 256
+WIDTH = SCREEN_WIDTH - LOGWIDTH
+HEIGHT = SCREEN_HEIGHT
 
 LEVELCOUNT = 0
 if __name__ == "__main__":
@@ -60,5 +63,5 @@ if __name__ == "__main__":
     pygame.init()
     pygame.mouse.set_visible(False)
     #DEBUG: Change start scene here
-    title = Scene.TitleScene(WIDTH, HEIGHT)
-    run(WIDTH, HEIGHT, 60, title)
+    title = Scene.TitleScene(SCREEN_WIDTH, SCREEN_HEIGHT)
+    run(SCREEN_WIDTH, SCREEN_HEIGHT, 60, title)

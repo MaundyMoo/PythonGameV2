@@ -8,7 +8,7 @@ class Map():
         self.path = path
         
         #Cellular Automata test data
-        self.cellheight = 80
+        self.cellheight = 20
         self.cellwidth = 40
         
     
@@ -22,7 +22,8 @@ class Map():
                 if not map[rows][columns]:
                     row.append(Tiles.Tile((columns,rows), self.tileSheet.returnTile(0,0),False))
                 else:
-                    row.append(Tiles.AnimTile((columns,rows), self.animTileSheet,True,0,3,10))
+                    #row.append(Tiles.AnimTile((columns,rows), self.animTileSheet,True,0,3,10))
+                    row.append(Tiles.Tile((columns, rows), self.tileSheet.returnTile(2, 0), True))
             TileMap.append(row)
         return TileMap, caverns
     
