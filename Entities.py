@@ -133,6 +133,7 @@ class Player(Entity):
             self.logger.logDeath(enemy.name)
             enemy.die()
         else:
+            self.logger.logCombat(enemy.name, self.name, enemy.Damage)
             self.health -= enemy.Damage
             enemy.health -= self.Damage
         #Display some visual feedback from battle, maybe print to console if need be as a form of combat log, but Id rather not
