@@ -10,11 +10,11 @@ class Logger:
         #I don't know if it's worth having these as attributes rather than reading from a constants file
         self.position = pos
         self.width, self.height = width, height
-        #Initialise attributes with no value
+        #Initialise attributes with a default value (0 or null crashes unfortunately)
         self.playerMaxHealth: int = 1
         self.playerHealth: int = 1
 
-        self.healthFont = pygame.font.SysFont("Impact", 20)
+        self.Font = pygame.font.SysFont("Impact", 20)
         self.healthX = 10
         self.healthBarWidth = self.width - self.healthX * 2
         self.healthBarHeight = 20
@@ -22,11 +22,14 @@ class Logger:
         self.healthOffset = 10
 
     #How do I actually want to log events, parse the string in or parse the action and let the method handle creating a string
-    def logEvent(self, text: str):
-        pass
+    def logDeath(self, entity: str):
+        msg = entity + ' was killed.'
+        pygMsg = self.Font.render(msg, True, (0, 0, 0))
+        self.log.append(pygMsg)
     def logCombat(self, Attacker: str, Defender: str, damage: int):
-        string = Attacker + ' hit ' + Defender + ' for ' + str(damage) + '.'
-        print(string)
+        msg = Attacker + ' hit ' + Defender + ' for ' + str(damage) + '.'
+        pygMsg = self.Font.render(msg, True, (0,0,0))
+        self.log.append(pygMsg)
     def Update(self, playerHealth: int, playerMaxHealth: int):
         '''
         The question is,
@@ -36,6 +39,8 @@ class Logger:
         '''
         self.playerHealth = playerHealth
         self.playerMaxHealth = playerMaxHealth
+        while len(self.log) > 20:
+            self.log.pop(0)
     def Render(self, screen):
         '''
         Should probably have a way of anchoring elements native to the logger
@@ -43,6 +48,7 @@ class Logger:
         the logger's position on the screen, rather than relative to the screen
         itself.
         oh god it's css all over again /o\
+        Just offset all X positions by self.position, the height has no offset so it doesn't matter
         '''
         pygame.draw.rect(screen, (100,100,100), (self.position, 0, self.width, self.height))
         # Draws three rectangles for the health bar, Health bar in green, back in red, and border in black
@@ -53,5 +59,9 @@ class Logger:
         # Health
         pygame.draw.rect(screen, (0, 255, 0), (self.position + self.healthX, self.healthY, self.healthBarWidth * (self.playerHealth / self.playerMaxHealth), self.healthBarHeight))
         # Text
-        healthText = self.healthFont.render((str(self.playerHealth) + "/" + str(self.playerMaxHealth)), True, (0, 0, 100))
+        healthText = self.Font.render((str(self.playerHealth) + "/" + str(self.playerMaxHealth)), True, (0, 0, 100))
         screen.blit(healthText, (self.position + self.healthX + self.healthBarWidth / 2 - healthText.get_width() / 2, self.healthY - self.healthOffset / 4))
+
+        #Log
+        for i in range(0, len(self.log)):
+            screen.blit(self.log[i], (self.position + 5, self.Font.get_height() * i + 5))

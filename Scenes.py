@@ -79,7 +79,7 @@ class LoadingScene(SceneBase):
         self.hasRendered = False
     def Update(self):
         if self.hasRendered:
-            path = Main.getPath("res/map.png")
+            path = Main.getPath("res/map2.png")
             self.SwitchToScene(GameScene(self.width, self.height, path))
     def ProcessInput(self, events, pressed_keys):
         pass
@@ -301,7 +301,7 @@ class GameScene(SceneBase):
             self.tileMap[each.y][each.x].Render(screen, self.CameraX, self.CameraY)
             each.Render(screen, self.CameraX, self.CameraY)
         self.tileMap[self.player.y][self.player.x].Render(screen, self.CameraX, self.CameraY)
-        #TODO Render log object here
+
         self.player.Render(screen, self.CameraX, self.CameraY)
         self.logger.Render(screen)
     

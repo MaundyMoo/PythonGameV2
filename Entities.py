@@ -128,7 +128,9 @@ class Player(Entity):
     #This is called when the player initiates an attack on an enemy by walking into them
     def Combat(self, enemy):
         enemy.TurnCombat = True
+        self.logger.logCombat(self.name, enemy.name, self.Damage)
         if enemy.health < self.Damage:
+            self.logger.logDeath(enemy.name)
             enemy.die()
         else:
             self.health -= enemy.Damage
@@ -137,7 +139,8 @@ class Player(Entity):
         #Maybe a floating combat text kind of thing, like WoW but 2D, although may be difficult
         #As long as there's some audiovisual feedback to the player
     #This is called when a player gets attacked by an enemy without the player doing any attack
-    def Attacked(self, enemy):   
+    def Attacked(self, enemy):
+        self.logger.logCombat(enemy.name, self.name, enemy.Damage)
         enemy.TurnCombat = True
         self.health -= enemy.Damage
     def die(self):
@@ -195,7 +198,7 @@ class TestEnemy(Enemy):
         path = Main.getPath("res/EnemySheet.png")
         spritesheet = path; frames = 1; interval = 20; animRow = 0
         super().__init__(x, y, spritesheet, map, frames, interval, animRow, agrorange)
-        self.name = TestEnemy
+        self.name = 'TestEnemy'
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1
