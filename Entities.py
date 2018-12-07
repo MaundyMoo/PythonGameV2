@@ -16,6 +16,8 @@ class Entity:
         self.interval = interval
         self.animRow = 0
         self.tick = 0
+
+        self.name: str
     def ImgToSprite(self, spr):
         Sprite = pygame.image.fromstring(spr.tobytes(), spr.size, spr.mode)
         Sprite = pygame.transform.scale(Sprite, (Tiles.TILESIZE, Tiles.TILESIZE))
@@ -37,27 +39,33 @@ class Entity:
         self.sprite = self.ImgToSprite(self.spriteSheet.returnTile(self.tick // self.interval, self.animRow))
         
 class Player(Entity):
-    def __init__(self, x, y, spritesheet, map, frames, interval):
+    def __init__(self, x, y, spritesheet, map, frames, interval, logger):
         super().__init__(x, y, spritesheet, map, frames, interval)
         #Camera / Map constants
         self.xCentre = int((Main.WIDTH / Tiles.TILESIZE) / 2)
         self.yCentre = int((Main.HEIGHT / Tiles.TILESIZE) / 2)
+
+        self.name = 'Player'
+        self.logger = logger
 
         #Health
         self.isDead = False
         self.maxHealth = 20
         self.health = self.maxHealth
         #Health bar drawing
+        '''
         self.healthBarHeight = 20
         self.healthBarWidth = 150
         self.healthX = self.healthY = 10
         self.healthOffset = 10
         self.healthFont = pygame.font.SysFont("Impact", 20)
+        '''
         self.switchLevel = False
         #Combat Stats
         self.Damage = 3
     def Render(self, screen, OffsetX, OffsetY):
         super().Render(screen, OffsetX, OffsetY)
+        '''
         #Draws three rectangles for the health bar, Health bar in green, back in red, and border in black
         #Border
         pygame.draw.rect(screen, (0,0,0), (self.healthX - self.healthOffset/2, self.healthY - self.healthOffset/2, self.healthBarWidth + self.healthOffset, self.healthBarHeight + self.healthOffset))
@@ -68,7 +76,9 @@ class Player(Entity):
         #Text
         healthText = self.healthFont.render((str(self.health) + "/" + str(self.maxHealth)), True,(0,0,100)) 
         screen.blit(healthText, (self.healthX + self.healthBarWidth/2 - healthText.get_width()/2, self.healthY - self.healthOffset/4))
+        '''
     def Update(self):
+        self.logger.Update(self.health, self.maxHealth)
         if self.health <= 0:
             self.die()
         super().Update()
@@ -185,6 +195,7 @@ class TestEnemy(Enemy):
         path = Main.getPath("res/EnemySheet.png")
         spritesheet = path; frames = 1; interval = 20; animRow = 0
         super().__init__(x, y, spritesheet, map, frames, interval, animRow, agrorange)
+        self.name = TestEnemy
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1

@@ -161,6 +161,7 @@ class GameScene(SceneBase):
     #When map/tiles are done will need to probably parse a map in here
     def __init__(self, width, height, mapFile):
         super().__init__(width, height)
+        self.logger = Logger.Logger(pos = Main.WIDTH, width = Main.LOGWIDTH, height = Main.SCREEN_HEIGHT)
         path1 = Main.getPath("res/TileSheet.png")
         path2 = Main.getPath("res/AnimTileSheet.png")
         self.map = Mapper.Map(mapFile, path1, path2)
@@ -171,16 +172,16 @@ class GameScene(SceneBase):
             self.tileMap, caverns = self.map.getCavernTileMap()
             playerLocationY, playerLocationX = random.choice(caverns[0])
             playerLocation = (playerLocationX, playerLocationY)
-            self.player = Entities.Player(playerLocation[0],playerLocation[1],"res/playerSheet.png",self.tileMap,3,10)
+            self.player = Entities.Player(playerLocation[0],playerLocation[1],"res/playerSheet.png",self.tileMap,3,10, self.logger)
             enemyLocations = self.calculateEnemyPlacements(caverns, playerLocation)
             self.Entities = [self.player]
             for each in enemyLocations:
                 self.Entities.append(Entities.TestEnemy(each[0],each[1],self.tileMap))
-        else: 
+        else:
             self.tileMap = self.map.getTileMap()
             playerLocationY, playerLocationX = (2,2)
             playerLocation = (playerLocationY, playerLocationX)
-            self.player = Entities.Player(playerLocationY,playerLocationX, "res/playerSheet.png", self.tileMap, 3, 10)
+            self.player = Entities.Player(playerLocationY,playerLocationX, "res/playerSheet.png", self.tileMap, 3, 10, self.logger)
             self.Entities = [self.player]
             #Will need to make a system of entity placement that isn't hard coded, but Im not entirely sure how other than random generation or messing around with alpha channels.
             # ^ IGNORE ALREADY DONE WITH RANDOM GEN
@@ -190,8 +191,6 @@ class GameScene(SceneBase):
                                 Entities.TestEnemy(6,6,self.tileMap, 100)]
             self.Entities.extend(self.DummyEnemies)
         self.graph = Pathing.Graph(self.tileMap)
-
-        self.logger = Logger.Logger(pos = Main.WIDTH, width = Main.LOGWIDTH, height = Main.SCREEN_HEIGHT)
 
         self.animTiles = []
         self.renderedBack = False

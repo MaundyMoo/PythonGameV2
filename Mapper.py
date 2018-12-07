@@ -8,9 +8,8 @@ class Map():
         self.path = path
         
         #Cellular Automata test data
-        self.cellheight = 20
+        self.cellheight = 40
         self.cellwidth = 40
-        
     
     def getCavernTileMap(self):
         TileMap = []
