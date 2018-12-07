@@ -30,6 +30,10 @@ class Logger:
         msg = Attacker + ' hit ' + Defender + ' for ' + str(damage) + '.'
         pygMsg = self.Font.render(msg, True, (0,0,0))
         self.log.append(pygMsg)
+    def logDamage(self, player: str, Damage: int):
+        msg = player + ' took ' + str(Damage) + ' damage.'
+        pygMsg = self.Font.render(msg, True, (0, 0, 0))
+        self.log.append(pygMsg)
     def Update(self, playerHealth: int, playerMaxHealth: int):
         '''
         The question is,

@@ -79,7 +79,7 @@ class LoadingScene(SceneBase):
         self.hasRendered = False
     def Update(self):
         if self.hasRendered:
-            path = Main.getPath("res/map2.png")
+            path = Main.getPath("res/map.png")
             self.SwitchToScene(GameScene(self.width, self.height, path))
     def ProcessInput(self, events, pressed_keys):
         pass

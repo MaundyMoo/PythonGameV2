@@ -89,7 +89,8 @@ class Player(Entity):
             if self.x + dX not in range(0, len(self.map[0])): dX = 0
             if self.y + dY not in range(0, len(self.map)): dY = 0
             if type(self.map[self.y + dY][self.x + dX]) == Tiles.DangerTileAnim:
-                self.health -= self.map[self.y + dY][self.x + dX].damageValue 
+                self.health -= self.map[self.y + dY][self.x + dX].damageValue
+                self.logger.logDamage(self.name, self.map[self.y + dY][self.x + dX].damageValue)
             elif type(self.map[self.y + dY][self.x + dX]) == Tiles.TransportTile:
                 self.switchLevel = True
         except IndexError:
