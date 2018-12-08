@@ -85,6 +85,9 @@ def getCaverns(map: list):
         #Loop through cavern locations and make sure two adjaceantly numbered caverns are connected
         for i in range(0, len(caverns)-2):
             map = joinCaverns(choice(caverns[i]), choice(caverns[i+1]), cavernMap)
+    for each in map:
+        print(each)
+    print('-' * 200)
     for y in range(0, len(map)):
         for x in range(0, len(map[0])):
             if cavernMap[y][x] == ',':

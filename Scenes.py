@@ -292,6 +292,8 @@ class GameScene(SceneBase):
         #Check if need to switch scene
         if self.player.switchLevel:
             self.SwitchToScene(GameScene(self.width, self.height, self.tileMap[self.player.y][self.player.x].destination))
+        if self.player.NewMap and self.CELLMAP:
+            self.SwitchToScene(GameScene(self.width, self.height, None))
             
     def Render(self, screen):
         if not self.renderedBack: self.backgroundRender(screen); self.renderedBack = True

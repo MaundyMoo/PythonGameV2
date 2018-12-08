@@ -1,5 +1,6 @@
 import Tiles, Image, os, Main, CellularAutomata
 from PIL import Image as Img
+from random import choice
 class Map():
     def __init__(self, path, tileSheetPath, animTileSheetPath):
         self.tileSheet = Image.SpriteSheet(tileSheetPath, 32)
@@ -24,10 +25,12 @@ class Map():
                     #row.append(Tiles.AnimTile((columns,rows), self.animTileSheet,True,0,3,10))
                     row.append(Tiles.Tile((columns, rows), self.tileSheet.returnTile(2, 0), True))
             TileMap.append(row)
+        #Adds the tile that goes to next level
+        EndLocation = choice(caverns[-2])
+        TileMap[EndLocation[0]][EndLocation[1]] = Tiles.LevelTile((EndLocation[1],EndLocation[0]), self.tileSheet.returnTile(3,0), False)
         return TileMap, caverns
     
     def getTileMap(self):
-
         mapPath = Main.getPath(self.path)
         self.map = Img.open(mapPath)
         #Gets a list of all the pixel data in the img in a 1 dimensional list

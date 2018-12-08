@@ -1,5 +1,5 @@
 import Image, pygame, Main
-tileSize = TILESIZE = 64
+tileSize = TILESIZE = 32
 class Tile:
     #Tiles will always be square
     TILESIZE = tileSize
@@ -48,8 +48,12 @@ class DangerTileAnim(AnimTile):
     def __init__(self, gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, damageValue, cost = 1):
         super().__init__(gridPos, spritesheet, collision, animRow, NoOfFrames, timePeriod, cost)
         self.damageValue = damageValue
-        
+#Obselete due to random map generation
 class TransportTile(Tile):
     def __init__(self, gridPos, sprite, collision, destination):
         super().__init__(gridPos, sprite, collision)
         self.destination = destination
+#Idk if this needs to be a thing but sure
+class LevelTile(Tile):
+    def __init__(self, gridPos, sprite, collision):
+        super().__init__(gridPos, sprite, collision)

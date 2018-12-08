@@ -61,6 +61,7 @@ class Player(Entity):
         self.healthFont = pygame.font.SysFont("Impact", 20)
         '''
         self.switchLevel = False
+        self.NewMap = False
         #Combat Stats
         self.Damage = 3
     def Render(self, screen, OffsetX, OffsetY):
@@ -93,6 +94,8 @@ class Player(Entity):
                 self.logger.logDamage(self.name, self.map[self.y + dY][self.x + dX].damageValue)
             elif type(self.map[self.y + dY][self.x + dX]) == Tiles.TransportTile:
                 self.switchLevel = True
+            elif type(self.map[self.y + dY][self.x + dX]) == Tiles.LevelTile:
+                self.NewMap = True
         except IndexError:
             pass
         #Returns True or false depending on whether it wants the camera to move with the character or not
