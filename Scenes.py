@@ -176,7 +176,11 @@ class GameScene(SceneBase):
             enemyLocations = self.calculateEnemyPlacements(caverns, playerLocation)
             self.Entities = [self.player]
             for each in enemyLocations:
-                self.Entities.append(Entities.TestEnemy(each[0],each[1],self.tileMap))
+                seed = random.randint(0,3)
+                if not seed == 1:
+                    self.Entities.append(Entities.TestEnemy(each[0],each[1],self.tileMap))
+                else:
+                    self.Entities.append(Entities.Goblin(each[0], each[1], self.tileMap))
         else:
             self.tileMap = self.map.getTileMap()
             playerLocationY, playerLocationX = (2,2)

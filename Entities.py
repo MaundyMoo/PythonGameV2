@@ -1,6 +1,6 @@
 import Main, Image, pygame, Tiles, Events, Pathing
 class Entity:
-    def __init__(self, x, y, spritesheet, map, frames, interval, colour = (255,0,0)):
+    def __init__(self, x, y, spritesheet, map, frames, interval, animRow = 0):
         self.x, self.y, self.map = x, y, map
         
         #Sprite / Animation initialisation
@@ -9,12 +9,12 @@ class Entity:
         spr = self.spriteSheet.returnTile(0, 0)
         self.sprite = self.ImgToSprite(spr)
         #Idk what this is doing here tbh
-        self.damageSprite = Image.spriteFlash(spr, colour)
+        #self.damageSprite = Image.spriteFlash(spr, colour)
         self.sprite = pygame.transform.scale(self.sprite, (Tiles.TILESIZE, Tiles.TILESIZE))
         
         self.frames = frames
         self.interval = interval
-        self.animRow = 0
+        self.animRow = animRow
         self.tick = 0
 
         self.name: str
@@ -158,7 +158,7 @@ class Player(Entity):
         
 class Enemy(Entity):
     def __init__(self, x, y, spritesheet, map, frames, interval, animRow, agrorange):
-        super().__init__(x, y, spritesheet, map, frames, interval)
+        super().__init__(x, y, spritesheet, map, frames, interval, animRow)
         self.maxHealth = self.health = self.Damage= 0
         self.isDead = False
         self.agrorange = agrorange
@@ -201,9 +201,23 @@ class TestEnemy(Enemy):
     def __init__(self, x, y, map, agrorange = 8):
         #Entity Constants
         path = Main.getPath("res/EnemySheet.png")
-        spritesheet = path; frames = 1; interval = 20; animRow = 0
+        spritesheet = path; frames = 3; interval = 20; animRow = 0
         super().__init__(x, y, spritesheet, map, frames, interval, animRow, agrorange)
         self.name = 'TestEnemy'
         #Stats
         self.maxHealth = self.health = 5
         self.Damage = 1
+
+class Goblin(Enemy):
+    def __init__(self, x, y, map, agrorange=12):
+        # Entity Constants
+        path = Main.getPath("res/EnemySheet.png")
+        spritesheet = path;
+        frames = 3;
+        interval = 15;
+        animRow = 1
+        super().__init__(x, y, spritesheet, map, frames, interval, animRow, agrorange)
+        self.name = 'Goblin'
+        # Stats
+        self.maxHealth = self.health = 10
+        self.Damage = 2
