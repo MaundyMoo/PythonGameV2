@@ -10,6 +10,8 @@ class Logger:
         #I don't know if it's worth having these as attributes rather than reading from a constants file
         self.position = pos
         self.width, self.height = width, height
+        self.logAmount = 20
+        self.textOffset = 5
         #Initialise attributes with a default value (0 or null crashes unfortunately)
         self.playerMaxHealth: int = 1
         self.playerHealth: int = 1
@@ -43,7 +45,7 @@ class Logger:
         '''
         self.playerHealth = playerHealth
         self.playerMaxHealth = playerMaxHealth
-        while len(self.log) > 20:
+        while len(self.log) > self.logAmount:
             self.log.pop(0)
     def Render(self, screen):
         '''
@@ -54,7 +56,9 @@ class Logger:
         oh god it's css all over again /o\
         Just offset all X positions by self.position, the height has no offset so it doesn't matter
         '''
+        #draw.rect(screen, (r,g,b), (posX, posY, width, height))
         pygame.draw.rect(screen, (100,100,100), (self.position, 0, self.width, self.height))
+        pygame.draw.rect(screen, (0, 0, 0), (self.position, self.Font.get_height() * self.logAmount + self.textOffset, self.width, 4))
         # Draws three rectangles for the health bar, Health bar in green, back in red, and border in black
         # Border
         pygame.draw.rect(screen, (0, 0, 0), (self.position + self.healthX - self.healthOffset / 2, self.healthY - self.healthOffset / 2, self.healthBarWidth + self.healthOffset, self.healthBarHeight + self.healthOffset))
@@ -68,4 +72,4 @@ class Logger:
 
         #Log
         for i in range(0, len(self.log)):
-            screen.blit(self.log[i], (self.position + 5, self.Font.get_height() * i + 5))
+            screen.blit(self.log[i], (self.position + 5, self.Font.get_height() * i + self.textOffset))

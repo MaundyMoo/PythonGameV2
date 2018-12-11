@@ -1,5 +1,5 @@
 import Image, pygame, Main
-tileSize = TILESIZE = 32
+tileSize = TILESIZE = 64
 class Tile:
     #Tiles will always be square
     TILESIZE = tileSize
